@@ -1,0 +1,25 @@
+ARAÇ KİRALAMA VE REZERVASYON UYGULAMASI
+
+Proje: YolArkadaşı
+Teknoloji: .NET 9, Blazor Web App, C#, Razor
+
+PROJE ÜYELERİ VE GÖREVLERİ
+1. Öğrenci numarası: [Teslimden önce doldurulacak]
+   Ad Soyad: [Teslimden önce doldurulacak]
+   Görevler: [Gerçekte tamamlanan görevler teslimden önce yazılacak]
+
+UYGULAMA KAPSAMI
+Araçları JSON verisinden listeleme ve filtreleme, kiralama tarihlerini ve ek hizmetleri seçme, toplam fiyatı hesaplama, müşteri formunu doğrulama, rezervasyonları takip etme ve iptal etme.
+
+ÇALIŞTIRMA
+1. .NET 9 SDK kurulu olmalıdır.
+2. Proje klasöründe `dotnet run` komutunu çalıştırın.
+3. Terminalde gösterilen yerel adresi tarayıcıda açın.
+
+TESLİM ÖNCESİ KONTROL
+- Proje kaynaklarını ZIP/RAR olarak sıkıştırın.
+- Proje üyesi ve görev alanlarını gerçek bilgilerle tamamlayın.
+- Uygulamayı çalıştırıp temel ekran ve işlevleri anlatan videoyu kaydedin.
+- Eksik veya çalışmayan bir özellik varsa video ve dokümantasyonda açıkça belirtin.
+
+Not: Bu dosyadaki üye ve görev alanları, proje tamamlanınca gerçek bilgilerle güncellenmelidir.
