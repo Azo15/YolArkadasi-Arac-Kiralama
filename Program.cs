@@ -1,4 +1,6 @@
 using VehicleRentalApp.Components;
+using VehicleRentalApp.Services;
+using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(sp.GetRequiredService<NavigationManager>().BaseUri) });
+builder.Services.AddScoped<CarService>();
+builder.Services.AddScoped<BookingState>();
 
 var app = builder.Build();
 

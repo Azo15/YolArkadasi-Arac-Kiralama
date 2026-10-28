@@ -1,0 +1,70 @@
+@page "/my-bookings"
+@implements IDisposable
+@inject BookingState BookingState
+@inject CarService Cars
+
+<PageTitle>Rezervasyonlarım | yolarkadaşı</PageTitle>
+
+<div class="bookings-page">
+    <div class="bookings-heading"><div><span class="eyebrow">YOLCULUKLARIN</span><h1>Rezervasyonların.</h1><p>Oluşturduğun kiralamaları buradan görüntüleyebilirsin.</p></div><a class="button-primary" href="/">Yeni araç keşfet <span>→</span></a></div>
+    @if (_message is not null){<div class="alert-message @(_messageSuccess ? "success-message" : "error-message")">@_message</div>}
+    @if (_loading)
+    {
+        <div class="loading-state"><span class="loader"></span><p>Rezervasyonların yükleniyor...</p></div>
+    }
+    else if (_bookings.Count == 0)
+    {
+        <div class="empty-bookings"><div class="empty-icon">▤</div><h2>Henüz rezervasyonun yok.</h2><p>Yolculuğuna uygun aracı seçerek ilk rezervasyonunu oluşturabilirsin.</p><a class="button-primary" href="/">Araçları keşfet <span>→</span></a></div>
+    }
+    else
+    {
+        <div class="booking-list">
+            @foreach (var booking in _bookings)
+            {
+                var car = _cars.FirstOrDefault(item => item.Id == booking.CarId);
+                <article class="booking-card">
+                    <div class="booking-image">@if(car is not null){<img src="@car.ImageUrl" alt="@car.Brand @car.Model" />}</div>
+                    <div class="booking-content">
+                        <div class="booking-topline"><div><span class="eyebrow">REZERVASYON KODU</span><strong class="booking-code">@booking.Id</strong></div><span class="booking-status @(booking.IsCancelled ? "status-cancelled" : booking.ReturnDate.Date < DateTime.Today ? "status-past" : "status-active")">@(booking.IsCancelled ? "İptal edildi" : booking.ReturnDate.Date < DateTime.Today ? "Tamamlandı" : "Onaylandı")</span></div>
+                        <h2>@(car is null ? "Araç bilgisi bulunamadı" : $"{car.Brand} {car.Model}")</h2>
+                        <div class="booking-details"><span>▣ @booking.PickupDate.ToString("dd MMM yyyy") – @booking.ReturnDate.ToString("dd MMM yyyy")</span><span>◉ @booking.CustomerName</span></div>
+                        <div class="booking-bottom"><div><span>TOPLAM ÜCRET</span><strong>@booking.TotalAmount.ToString("N0") ₺</strong></div>@if(!booking.IsCancelled && booking.PickupDate.Date > DateTime.Today){<button class="button-secondary" @onclick="() => CancelAsync(booking.Id)">Rezervasyonu iptal et</button>}</div>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<CarBooking> _bookings = [];
+    private List<Car> _cars = [];
+    private bool _loading = true;
+    private string? _message;
+    private bool _messageSuccess;
+
+    protected override async Task OnInitializedAsync()
+    {
+        BookingState.Changed += Refresh;
+        await BookingState.EnsureLoadedAsync();
+        _bookings = BookingState.Bookings.ToList();
+        _cars = (await Cars.GetCarsAsync()).ToList();
+        _loading = false;
+    }
+
+    private void Refresh()
+    {
+        _bookings = BookingState.Bookings.ToList();
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CancelAsync(string id)
+    {
+        var cancelled = await BookingState.CancelAsync(id);
+        _messageSuccess = cancelled;
+        _message = cancelled ? "Rezervasyonun iptal edildi." : "Bu rezervasyon artık iptal edilemiyor.";
+        Refresh();
+    }
+
+    public void Dispose() => BookingState.Changed -= Refresh;
+}

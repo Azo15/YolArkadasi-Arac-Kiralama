@@ -1,0 +1,27 @@
+<aside class="rental-summary">
+    <div class="summary-header"><span>REZERVASYON ÖZETİ</span><span class="summary-icon">↗</span></div>
+    <div class="summary-car"><img src="@Car.ImageUrl" alt="@Car.Brand @Car.Model" /><div><strong>@Car.Brand @Car.Model</strong><span>@Car.Category · @Car.Transmission</span></div></div>
+    <div class="summary-line"><span>Kiralama süresi</span><strong>@Days gün</strong></div>
+    <div class="summary-line"><span>Araç ücreti</span><strong>@((Car.DailyPrice * Days).ToString("N0")) ₺</strong></div>
+    @if (SelectedExtraIds.Count > 0)
+    {
+        @foreach (var extra in SelectedExtras)
+        {
+            <div class="summary-line"><span>@extra.Name</span><strong>@((extra.DailyPrice * Days).ToString("N0")) ₺</strong></div>
+        }
+    }
+    <div class="summary-total"><span>Toplam tutar</span><strong>@Total.ToString("N0") <small>₺</small></strong></div>
+    <p class="summary-footnote">* Ödeme bu eğitim prototipinde alınmaz.</p>
+</aside>
+
+@code {
+    [Parameter, EditorRequired] public Car Car { get; set; } = default!;
+    [Parameter] public DateTime PickupDate { get; set; }
+    [Parameter] public DateTime ReturnDate { get; set; }
+    [Parameter] public HashSet<string> SelectedExtraIds { get; set; } = [];
+    private int Days => Math.Max(1, (ReturnDate.Date - PickupDate.Date).Days);
+    private static readonly RentalExtra[] Extras = [
+        new("insurance", "Tam kapsamlı güvence", 250, ""), new("child-seat", "Çocuk koltuğu", 75, ""), new("extra-driver", "Ek sürücü", 150, "")];
+    private IEnumerable<RentalExtra> SelectedExtras => Extras.Where(extra => SelectedExtraIds.Contains(extra.Id));
+    private decimal Total => Days * (Car.DailyPrice + SelectedExtras.Sum(extra => extra.DailyPrice));
+}

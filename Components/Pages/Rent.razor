@@ -1,0 +1,138 @@
+@page "/cars/{Id}/rent"
+@inject CarService Cars
+@inject BookingState BookingState
+@inject NavigationManager Navigation
+
+<PageTitle>Rezervasyon oluştur | yolarkadaşı</PageTitle>
+
+@if (_loading)
+{
+    <div class="loading-state"><span class="loader"></span><p>Araç bilgileri yükleniyor...</p></div>
+}
+else if (_car is null)
+{
+    <div class="empty-state"><strong>Araç bulunamadı.</strong><a class="button-primary" href="/">Araçlara dön</a></div>
+}
+else
+{
+    <div class="rental-page">
+        <a href="/" class="back-link">← Araçlara dön</a>
+        <div class="rental-heading"><div><span class="eyebrow">BİRKAÇ ADIMDA HAZIR</span><h1>Yolculuğunu planla.</h1><p>@_car.Brand @_car.Model için tarihleri ve sana uygun ek hizmetleri seç.</p></div><span class="step-chip"><b>1</b> Araç seçildi</span></div>
+        @if (!_car.IsAvailable)
+        {
+            <div class="alert-message error-message">Bu araç şu anda kiralanabilir durumda değil. Başka bir araç seçebilirsin.</div>
+        }
+        @if (!string.IsNullOrWhiteSpace(_message))
+        {
+            <div class="alert-message @(_success ? "success-message" : "error-message")">@_message</div>
+        }
+        <div class="rental-layout">
+            <div class="rental-main-column">
+                <section class="selected-car-panel">
+                    <img src="@_car.ImageUrl" alt="@_car.Brand @_car.Model" />
+                    <div class="selected-car-info"><span class="category-pill-inline">@_car.Category</span><h2>@_car.Brand @_car.Model</h2><p>@_car.Seats kişi · @_car.Transmission · @_car.FuelType</p><strong>@_car.DailyPrice.ToString("N0") ₺ <small>/ gün</small></strong></div>
+                    <span class="selected-check">✓</span>
+                </section>
+                <RentalOptions @bind-PickupDate="_pickupDate" @bind-ReturnDate="_returnDate" @bind-SelectedExtraIds="_selectedExtraIds" OnChanged="ClearMessage" />
+                <section class="customer-panel">
+                    <div class="extras-heading"><div><span class="eyebrow">SON ADIM</span><h3>İletişim bilgilerin</h3></div><span class="extras-hint">* Zorunlu alanlar</span></div>
+                    <EditForm Model="_customer" OnValidSubmit="CreateBookingAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="validation-summary" />
+                        <div class="customer-form-grid">
+                            <label class="form-field"><span>AD SOYAD *</span><InputText @bind-Value="_customer.CustomerName" placeholder="Örn. Deniz Yılmaz" /><ValidationMessage For="() => _customer.CustomerName" /></label>
+                            <label class="form-field"><span>E-POSTA *</span><InputText @bind-Value="_customer.Email" type="email" placeholder="ornek@mail.com" /><ValidationMessage For="() => _customer.Email" /></label>
+                            <label class="form-field"><span>TELEFON *</span><InputText @bind-Value="_customer.Phone" type="tel" placeholder="05XX XXX XX XX" /><ValidationMessage For="() => _customer.Phone" /></label>
+                        </div>
+                        <div class="form-actions"><span>Rezervasyon ücretsizdir. Ödeme şu anda alınmaz.</span><button class="button-primary submit-button" type="submit" disabled="@(!_car.IsAvailable)">Rezervasyonu tamamla <span>→</span></button></div>
+                    </EditForm>
+                </section>
+            </div>
+            <RentalSummary Car="_car" PickupDate="_pickupDate" ReturnDate="_returnDate" SelectedExtraIds="_selectedExtraIds" />
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+    private Car? _car;
+    private bool _loading = true;
+    private DateTime _pickupDate = DateTime.Today.AddDays(1);
+    private DateTime _returnDate = DateTime.Today.AddDays(2);
+    private HashSet<string> _selectedExtraIds = [];
+    private CustomerInput _customer = new();
+    private string? _message;
+    private bool _success;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try { _car = (await Cars.GetCarsAsync()).FirstOrDefault(car => car.Id == Id); }
+        finally { _loading = false; }
+        await BookingState.EnsureLoadedAsync();
+    }
+
+    private void ClearMessage() => _message = null;
+
+    private async Task CreateBookingAsync()
+    {
+        if (_car is null || !_car.IsAvailable) return;
+        if (_pickupDate.Date < DateTime.Today || _returnDate.Date <= _pickupDate.Date)
+        {
+            _message = "Teslim alma tarihi bugün veya sonrası, iade tarihi teslim alma tarihinden sonra olmalıdır.";
+            _success = false;
+            return;
+        }
+
+        await BookingState.EnsureLoadedAsync();
+        if (BookingState.HasConflict(_car.Id, _pickupDate, _returnDate))
+        {
+            _message = "Bu araç seçtiğin tarihlerde başka bir rezervasyona sahip. Lütfen farklı tarih seç.";
+            _success = false;
+            return;
+        }
+
+        var days = (_returnDate.Date - _pickupDate.Date).Days;
+        var extras = new Dictionary<string, decimal> { ["insurance"] = 250, ["child-seat"] = 75, ["extra-driver"] = 150 };
+        var total = days * (_car.DailyPrice + _selectedExtraIds.Where(extras.ContainsKey).Sum(id => extras[id]));
+        var booking = new CarBooking
+        {
+            Id = $"CAR-{DateTime.Today:yyyy}-{Random.Shared.Next(100, 1000)}",
+            CarId = _car.Id,
+            CustomerName = _customer.CustomerName.Trim(),
+            Email = _customer.Email.Trim(),
+            Phone = _customer.Phone.Trim(),
+            PickupDate = _pickupDate.Date,
+            ReturnDate = _returnDate.Date,
+            ExtraIds = _selectedExtraIds.ToList(),
+            TotalAmount = total
+        };
+        try
+        {
+            await BookingState.AddAsync(booking);
+            _success = true;
+            _message = $"Rezervasyonun oluşturuldu. Kodun: {booking.Id}";
+            _customer = new();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _success = false;
+            _message = ex.Message;
+        }
+    }
+
+    private sealed class CustomerInput
+    {
+        [Required(ErrorMessage = "Ad soyad alanı zorunludur.")]
+        [StringLength(80, MinimumLength = 3, ErrorMessage = "Ad soyad 3–80 karakter arasında olmalıdır.")]
+        public string CustomerName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "E-posta alanı zorunludur.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Telefon alanı zorunludur.")]
+        [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
+        [StringLength(20, MinimumLength = 10, ErrorMessage = "Telefon numarası 10–20 karakter arasında olmalıdır.")]
+        public string Phone { get; set; } = string.Empty;
+    }
+}
