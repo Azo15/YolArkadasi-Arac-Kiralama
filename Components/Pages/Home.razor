@@ -1,7 +1,78 @@
-﻿@page "/"
+@page "/"
+@inject CarService Cars
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Araç Kirala | yolarkadaşı</PageTitle>
 
-<h1>Hello, world!</h1>
+<section class="welcome-row">
+    <div><span class="eyebrow">ÖZGÜRCE YOLA ÇIK</span><h1>Yolculuğun burada <span>başlıyor.</span></h1><p>İhtiyacına uygun aracı bul, tarihlerini seç ve gerisini bize bırak.</p></div>
+    <div class="welcome-badge"><span>✦</span> Güvenli ve kolay kiralama</div>
+</section>
 
-Welcome to your new app.
+<section class="search-panel" aria-label="Araç filtreleri">
+    <label class="filter-field"><span>ARAÇ ARA</span><input @bind="_query" @bind:event="oninput" placeholder="Marka veya model ara" /></label>
+    <label class="filter-field"><span>KATEGORİ</span><select @bind="_category"><option value="">Tüm kategoriler</option>@foreach (var category in _categories){<option value="@category">@category</option>}</select></label>
+    <label class="filter-field"><span>YAKIT TÜRÜ</span><select @bind="_fuel"><option value="">Tümü</option>@foreach (var fuel in _fuels){<option value="@fuel">@fuel</option>}</select></label>
+    <label class="filter-field"><span>VİTES</span><select @bind="_transmission"><option value="">Tümü</option>@foreach (var transmission in _transmissions){<option value="@transmission">@transmission</option>}</select></label>
+</section>
+
+<section class="fleet-section">
+    <div class="section-heading"><div><span class="eyebrow">SENİN İÇİN SEÇTİK</span><h2>Kiralamaya hazır araçlar</h2></div><span class="result-count">@FilteredCars.Count araç bulundu</span></div>
+    @if (_loading)
+    {
+        <div class="loading-state"><span class="loader"></span><p>Araçlar yükleniyor...</p></div>
+    }
+    else if (_error is not null)
+    {
+        <div class="empty-state"><strong>Araç listesi şu an yüklenemedi.</strong><p>@_error</p></div>
+    }
+    else if (FilteredCars.Count == 0)
+    {
+        <div class="empty-state"><strong>Aramana uygun araç bulamadık.</strong><p>Filtrelerini değiştirip yeniden deneyebilirsin.</p></div>
+    }
+    else
+    {
+        <div class="car-grid">
+            @foreach (var car in FilteredCars)
+            {
+                <article class="car-card">
+                    <div class="car-image-wrap">
+                        <img class="car-image" src="@car.ImageUrl" alt="@car.Brand @car.Model" loading="lazy" />
+                        <span class="category-pill">@car.Category</span>
+                        @if (!car.IsAvailable){<span class="unavailable-pill">Şu an kirada</span>}
+                    </div>
+                    <div class="car-card-body">
+                        <div class="car-title-row"><div><h3>@car.Brand @car.Model</h3><p>veya benzer araç</p></div><span class="rating">★ <b>4.9</b></span></div>
+                        <div class="car-specs"><span>♙ @car.Seats kişi</span><span>⚙ @car.Transmission</span><span>◉ @car.FuelType</span></div>
+                        <div class="car-card-footer"><div><strong>@car.DailyPrice.ToString("N0") ₺</strong><span>/ gün</span></div><a class="button-primary @(car.IsAvailable ? "" : "button-disabled")" href="@(car.IsAvailable ? $"cars/{car.Id}/rent" : "#")" aria-disabled="@(!car.IsAvailable)">@(car.IsAvailable ? "Aracı seç" : "Müsait değil") <span>→</span></a></div>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    private List<Car> _cars = [];
+    private bool _loading = true;
+    private string? _error;
+    private string _query = string.Empty;
+    private string _category = string.Empty;
+    private string _fuel = string.Empty;
+    private string _transmission = string.Empty;
+
+    private IReadOnlyList<string> _categories => _cars.Select(car => car.Category).Distinct().Order().ToArray();
+    private IReadOnlyList<string> _fuels => _cars.Select(car => car.FuelType).Distinct().Order().ToArray();
+    private IReadOnlyList<string> _transmissions => _cars.Select(car => car.Transmission).Distinct().Order().ToArray();
+    private List<Car> FilteredCars => _cars.Where(car =>
+        ($"{car.Brand} {car.Model}".Contains(_query, StringComparison.CurrentCultureIgnoreCase)) &&
+        (_category == string.Empty || car.Category == _category) &&
+        (_fuel == string.Empty || car.FuelType == _fuel) &&
+        (_transmission == string.Empty || car.Transmission == _transmission)).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try { _cars = (await Cars.GetCarsAsync()).ToList(); }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+}
