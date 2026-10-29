@@ -1,0 +1,51 @@
+<section class="fleet-section" aria-label="Araç listesi">
+    <div class="search-panel" aria-label="Araç filtreleri">
+        <label class="filter-field"><span>ARAÇ ARA</span><input @bind="_query" @bind:event="oninput" placeholder="Marka veya model ara" /></label>
+        <label class="filter-field"><span>KATEGORİ</span><select @bind="_category"><option value="">Tüm kategoriler</option>@foreach (var category in Categories){<option value="@category">@category</option>}</select></label>
+        <label class="filter-field"><span>YAKIT TÜRÜ</span><select @bind="_fuel"><option value="">Tümü</option>@foreach (var fuel in FuelTypes){<option value="@fuel">@fuel</option>}</select></label>
+        <label class="filter-field"><span>VİTES</span><select @bind="_transmission"><option value="">Tümü</option>@foreach (var transmission in Transmissions){<option value="@transmission">@transmission</option>}</select></label>
+    </div>
+    <div class="section-heading"><div><span class="eyebrow">SENİN İÇİN SEÇTİK</span><h2>Kiralamaya hazır araçlar</h2></div><span class="result-count">@FilteredCars.Count araç bulundu</span></div>
+    @if (FilteredCars.Count == 0)
+    {
+        <div class="empty-state"><strong>Aramana uygun araç bulamadık.</strong><p>Filtrelerini değiştirip yeniden deneyebilirsin.</p></div>
+    }
+    else
+    {
+        <div class="car-grid">
+            @foreach (var car in FilteredCars)
+            {
+                <article class="car-card">
+                    <div class="car-image-wrap">
+                        <img class="car-image" src="@car.ImageUrl" alt="@car.Brand @car.Model" loading="lazy" />
+                        <span class="category-pill">@car.Category</span>
+                        @if (!car.IsAvailable){<span class="unavailable-pill">Şu an kirada</span>}
+                    </div>
+                    <div class="car-card-body">
+                        <div class="car-title-row"><div><h3>@car.Brand @car.Model</h3><p>veya benzer araç</p></div><span class="rating">★ <b>4.9</b></span></div>
+                        <div class="car-specs"><span>♙ @car.Seats kişi</span><span>⚙ @car.Transmission</span><span>◉ @car.FuelType</span></div>
+                        <div class="car-card-footer"><div><strong>@car.DailyPrice.ToString("N0") ₺</strong><span>/ gün</span></div><a class="button-primary @(car.IsAvailable ? "" : "button-disabled")" href="@(car.IsAvailable ? $"cars/{car.Id}/rent" : "#")" aria-disabled="@(!car.IsAvailable)">@(car.IsAvailable ? "Aracı seç" : "Müsait değil") <span>→</span></a></div>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<Car> Cars { get; set; } = [];
+
+    private string _query = string.Empty;
+    private string _category = string.Empty;
+    private string _fuel = string.Empty;
+    private string _transmission = string.Empty;
+
+    private IEnumerable<string> Categories => Cars.Select(car => car.Category).Distinct().Order();
+    private IEnumerable<string> FuelTypes => Cars.Select(car => car.FuelType).Distinct().Order();
+    private IEnumerable<string> Transmissions => Cars.Select(car => car.Transmission).Distinct().Order();
+    private List<Car> FilteredCars => Cars.Where(car =>
+        $"{car.Brand} {car.Model}".Contains(_query, StringComparison.CurrentCultureIgnoreCase) &&
+        (_category.Length == 0 || car.Category == _category) &&
+        (_fuel.Length == 0 || car.FuelType == _fuel) &&
+        (_transmission.Length == 0 || car.Transmission == _transmission)).ToList();
+}
