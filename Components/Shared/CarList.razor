@@ -1,31 +1,142 @@
 <section class="fleet-section" aria-label="Araç listesi">
     <div class="search-panel" aria-label="Araç filtreleri">
-        <label class="filter-field"><span>ARAÇ ARA</span><input @bind="_query" @bind:event="oninput" placeholder="Marka veya model ara" /></label>
-        <label class="filter-field"><span>KATEGORİ</span><select @bind="_category"><option value="">Tüm kategoriler</option>@foreach (var category in Categories){<option value="@category">@category</option>}</select></label>
-        <label class="filter-field"><span>YAKIT TÜRÜ</span><select @bind="_fuel"><option value="">Tümü</option>@foreach (var fuel in FuelTypes){<option value="@fuel">@fuel</option>}</select></label>
-        <label class="filter-field"><span>VİTES</span><select @bind="_transmission"><option value="">Tümü</option>@foreach (var transmission in Transmissions){<option value="@transmission">@transmission</option>}</select></label>
-        <label class="filter-field"><span>MAKSİMUM GÜNLÜK FİYAT</span><select @bind="_maximumDailyPrice"><option value="0">Sınır yok</option><option value="1500">1.500 ₺</option><option value="2500">2.500 ₺</option><option value="3500">3.500 ₺</option><option value="5000">5.000 ₺</option></select></label>
+        <label class="filter-field">
+            <span>ARAÇ ARA</span>
+            <input @bind="_query" @bind:event="oninput" placeholder="Marka veya model ara..." />
+        </label>
+        <label class="filter-field">
+            <span>KATEGORİ</span>
+            <select @bind="_category">
+                <option value="">Tüm kategoriler</option>
+                @foreach (var category in Categories)
+                {
+                    <option value="@category">@category</option>
+                }
+            </select>
+        </label>
+        <label class="filter-field">
+            <span>YAKIT TÜRÜ</span>
+            <select @bind="_fuel">
+                <option value="">Tümü</option>
+                @foreach (var fuel in FuelTypes)
+                {
+                    <option value="@fuel">@fuel</option>
+                }
+            </select>
+        </label>
+        <label class="filter-field">
+            <span>VİTES</span>
+            <select @bind="_transmission">
+                <option value="">Tümü</option>
+                @foreach (var transmission in Transmissions)
+                {
+                    <option value="@transmission">@transmission</option>
+                }
+            </select>
+        </label>
+        <label class="filter-field">
+            <span>MAKSİMUM GÜNLÜK FİYAT</span>
+            <select @bind="_maximumDailyPrice">
+                <option value="0">Sınır yok</option>
+                <option value="1500">1.500 ₺'ye kadar</option>
+                <option value="2500">2.500 ₺'ye kadar</option>
+                <option value="3500">3.500 ₺'ye kadar</option>
+                <option value="5000">5.000 ₺'ye kadar</option>
+            </select>
+        </label>
     </div>
-    <div class="section-heading"><div><span class="eyebrow">SENİN İÇİN SEÇTİK</span><h2>Kiralamaya hazır araçlar</h2></div><span class="result-count">@FilteredCars.Count araç bulundu</span></div>
+
+    <!-- Hızlı Kategori ve Filtre Butonları -->
+    <div class="quick-filter-bar">
+        <div class="quick-tags">
+            <button type="button" class="tag-btn @(string.IsNullOrEmpty(_category) && !_onlyAvailable ? "active" : "")" @onclick="() => SetCategory(string.Empty)">
+                ⚡ Tümü (@Cars.Count)
+            </button>
+            <button type="button" class="tag-btn @(_category == "Ekonomik" ? "active" : "")" @onclick='() => SetCategory("Ekonomik")'>
+                💰 Ekonomik
+            </button>
+            <button type="button" class="tag-btn @(_category == "SUV" ? "active" : "")" @onclick='() => SetCategory("SUV")'>
+                🚙 SUV & Aile
+            </button>
+            <button type="button" class="tag-btn @(_category == "Premium" ? "active" : "")" @onclick='() => SetCategory("Premium")'>
+                👑 Lüks & Premium
+            </button>
+            <button type="button" class="tag-btn @(_category == "Orta Sınıf" ? "active" : "")" @onclick='() => SetCategory("Orta Sınıf")'>
+                🚗 Orta Sınıf
+            </button>
+            <button type="button" class="tag-btn @(_onlyAvailable ? "active" : "")" @onclick="ToggleOnlyAvailable">
+                🟢 Sadece Müsait Olanlar
+            </button>
+        </div>
+        @if (HasActiveFilters)
+        {
+            <button type="button" class="reset-filter-btn" @onclick="ResetFilters">
+                ↺ Filtreleri Temizle
+            </button>
+        }
+    </div>
+
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">ÖZEL SEÇİLMİŞ FİLO</span>
+            <h2>Kiralamaya hazır araçlar</h2>
+        </div>
+        <span class="result-count">@FilteredCars.Count araç listeleniyor</span>
+    </div>
+
     @if (FilteredCars.Count == 0)
     {
-        <div class="empty-state"><strong>Aramana uygun araç bulamadık.</strong><p>Filtrelerini değiştirip yeniden deneyebilirsin.</p></div>
+        <div class="empty-state">
+            <span class="empty-emoji">🔍</span>
+            <strong>Aramana uygun araç bulunamadı.</strong>
+            <p>Seçtiğin filtre kriterlerini değiştirerek veya temizleyerek tekrar deneyebilirsin.</p>
+            <button type="button" class="button-primary" @onclick="ResetFilters">Tüm Araçları Göster</button>
+        </div>
     }
     else
     {
         <div class="car-grid">
             @foreach (var car in FilteredCars)
             {
-                <article class="car-card">
+                <article class="car-card @(car.IsAvailable ? "" : "card-unavailable")">
                     <div class="car-image-wrap">
                         <img class="car-image" src="@car.ImageUrl" alt="@car.Brand @car.Model" loading="lazy" />
                         <span class="category-pill">@car.Category</span>
-                        @if (!car.IsAvailable){<span class="unavailable-pill">Şu an kirada</span>}
+                        @if (!car.IsAvailable)
+                        {
+                            <span class="unavailable-pill">🔒 Şu an kirada</span>
+                        }
+                        else
+                        {
+                            <span class="available-badge">✓ Müsait</span>
+                        }
                     </div>
                     <div class="car-card-body">
-                        <div class="car-title-row"><div><h3>@car.Brand @car.Model</h3><p>veya benzer araç</p></div><span class="rating">★ <b>4.9</b></span></div>
-                        <div class="car-specs"><span>♙ @car.Seats kişi</span><span>⚙ @car.Transmission</span><span>◉ @car.FuelType</span></div>
-                        <div class="car-card-footer"><div><strong>@car.DailyPrice.ToString("N0") ₺</strong><span>/ gün</span></div><a class="button-primary @(car.IsAvailable ? "" : "button-disabled")" href="@(car.IsAvailable ? $"cars/{car.Id}/rent" : "#")" aria-disabled="@(!car.IsAvailable)">@(car.IsAvailable ? "Aracı seç" : "Müsait değil") <span>→</span></a></div>
+                        <div class="car-title-row">
+                            <div>
+                                <h3>@car.Brand @car.Model</h3>
+                                <p>veya muadili konforlu araç</p>
+                            </div>
+                            <span class="rating">★ <b>4.9</b> <small>(120+)</small></span>
+                        </div>
+                        <div class="car-specs">
+                            <span>👤 @car.Seats Kişilik</span>
+                            <span>⚙ @car.Transmission</span>
+                            <span>⛽ @car.FuelType</span>
+                            <span>❄️ Klimalı</span>
+                        </div>
+                        <div class="car-card-footer">
+                            <div class="price-box">
+                                <span class="price-label">GÜNLÜK ÜCRET</span>
+                                <strong>@car.DailyPrice.ToString("N0") ₺</strong>
+                            </div>
+                            <a class="button-primary @(car.IsAvailable ? "" : "button-disabled")" 
+                               href="@(car.IsAvailable ? $"cars/{car.Id}/rent" : "#")" 
+                               aria-disabled="@(!car.IsAvailable)">
+                                @(car.IsAvailable ? "Hemen Kirala" : "Müsait Değil") 
+                                <span>→</span>
+                            </a>
+                        </div>
                     </div>
                 </article>
             }
@@ -40,15 +151,46 @@
     private string _category = string.Empty;
     private string _fuel = string.Empty;
     private string _transmission = string.Empty;
+    private decimal _maximumDailyPrice = 0;
+    private bool _onlyAvailable = false;
 
     private IEnumerable<string> Categories => Cars.Select(car => car.Category).Distinct().Order();
     private IEnumerable<string> FuelTypes => Cars.Select(car => car.FuelType).Distinct().Order();
     private IEnumerable<string> Transmissions => Cars.Select(car => car.Transmission).Distinct().Order();
+
+    private bool HasActiveFilters =>
+        !string.IsNullOrEmpty(_query) ||
+        !string.IsNullOrEmpty(_category) ||
+        !string.IsNullOrEmpty(_fuel) ||
+        !string.IsNullOrEmpty(_transmission) ||
+        _maximumDailyPrice > 0 ||
+        _onlyAvailable;
+
+    private void SetCategory(string category)
+    {
+        _category = category;
+    }
+
+    private void ToggleOnlyAvailable()
+    {
+        _onlyAvailable = !_onlyAvailable;
+    }
+
+    private void ResetFilters()
+    {
+        _query = string.Empty;
+        _category = string.Empty;
+        _fuel = string.Empty;
+        _transmission = string.Empty;
+        _maximumDailyPrice = 0;
+        _onlyAvailable = false;
+    }
+
     private List<Car> FilteredCars => Cars.Where(car =>
         $"{car.Brand} {car.Model}".Contains(_query, StringComparison.CurrentCultureIgnoreCase) &&
-        (_category.Length == 0 || car.Category == _category) &&
-        (_fuel.Length == 0 || car.FuelType == _fuel) &&
-        (_transmission.Length == 0 || car.Transmission == _transmission) &&
-        (_maximumDailyPrice == 0 || car.DailyPrice <= _maximumDailyPrice)).ToList();
-    private decimal _maximumDailyPrice;
+        (string.IsNullOrEmpty(_category) || car.Category == _category) &&
+        (string.IsNullOrEmpty(_fuel) || car.FuelType == _fuel) &&
+        (string.IsNullOrEmpty(_transmission) || car.Transmission == _transmission) &&
+        (_maximumDailyPrice == 0 || car.DailyPrice <= _maximumDailyPrice) &&
+        (!_onlyAvailable || car.IsAvailable)).ToList();
 }
