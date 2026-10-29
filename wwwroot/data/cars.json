@@ -10,5 +10,8 @@
   { "id": "C009", "brand": "Volkswagen", "model": "Tiguan", "category": "SUV", "fuelType": "Dizel", "transmission": "Otomatik", "seats": 5, "dailyPrice": 3150, "imageUrl": "images/cars/tiguan.jpg", "isAvailable": false },
   { "id": "C010", "brand": "Fiat", "model": "Egea", "category": "Ekonomik", "fuelType": "Dizel", "transmission": "Manuel", "seats": 5, "dailyPrice": 1050, "imageUrl": "images/cars/egea.jpg", "isAvailable": true },
   { "id": "C011", "brand": "Audi", "model": "A4", "category": "Premium", "fuelType": "Dizel", "transmission": "Otomatik", "seats": 5, "dailyPrice": 4650, "imageUrl": "images/cars/audi.jpg", "isAvailable": true },
-  { "id": "C012", "brand": "Ford", "model": "Focus", "category": "Orta Sınıf", "fuelType": "Benzin", "transmission": "Otomatik", "seats": 5, "dailyPrice": 1750, "imageUrl": "images/cars/focus.jpg", "isAvailable": true }
+  { "id": "C012", "brand": "Ford", "model": "Focus", "category": "Orta Sınıf", "fuelType": "Benzin", "transmission": "Otomatik", "seats": 5, "dailyPrice": 1750, "imageUrl": "images/cars/focus.jpg", "isAvailable": true },
+  { "id": "C013", "brand": "Porsche", "model": "911 Carrera", "category": "Premium", "fuelType": "Benzin", "transmission": "Otomatik", "seats": 2, "dailyPrice": 8900, "imageUrl": "images/cars/porsche911.jpg", "isAvailable": true },
+  { "id": "C014", "brand": "Tesla", "model": "Model Y", "category": "SUV", "fuelType": "Elektrik", "transmission": "Otomatik", "seats": 5, "dailyPrice": 3850, "imageUrl": "images/cars/teslamodely.jpg", "isAvailable": true },
+  { "id": "C015", "brand": "BMW", "model": "420i Gran Coupe", "category": "Premium", "fuelType": "Benzin", "transmission": "Otomatik", "seats": 5, "dailyPrice": 3650, "imageUrl": "images/cars/bmw420i.jpg", "isAvailable": true }
 ]
