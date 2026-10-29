@@ -7,7 +7,6 @@
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 0;
     z-index: 20;
     overflow-y: auto;
     overflow-x: hidden;
@@ -41,7 +40,6 @@
     color: #123b34;
     display: grid;
     place-items: center;
-    font: 800 22px Manrope;
     box-shadow: 0 4px 12px rgba(209, 242, 106, 0.3);
 }
 
@@ -59,7 +57,7 @@
 }
 
 .sidebar-section-title {
-    margin: 20px 0 9px 8px;
+    margin: 22px 0 9px 8px;
     color: #799e93;
     font-size: 9.5px;
     font-weight: 800;
@@ -84,8 +82,9 @@
     transition: all 0.2s ease;
 }
 
-::deep .nav-link .nav-icon {
-    font-size: 16px;
+.nav-svg {
+    stroke: currentColor;
+    flex-shrink: 0;
 }
 
 ::deep .nav-link .nav-text {
@@ -123,7 +122,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 9px 12px;
+    padding: 8px 12px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -133,6 +132,16 @@
     text-decoration: none;
     transition: all 0.2s ease;
 }
+
+.shortcut-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.dot-eco { background: #60a5fa; }
+.dot-suv { background: #34d399; }
+.dot-prem { background: #fbbf24; }
 
 .shortcut-item:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -144,7 +153,7 @@
 .shortcut-item small {
     margin-left: auto;
     color: #d1f26a;
-    font-size: 10px;
+    font-size: 10.5px;
     font-weight: 700;
 }
 
@@ -163,6 +172,11 @@
     background: rgba(255, 255, 255, 0.03);
 }
 
+.perk-svg {
+    color: #a4c2b9;
+    flex-shrink: 0;
+}
+
 .perk-item strong {
     display: block;
     font-size: 11px;
@@ -177,7 +191,7 @@
 
 /* Destek Kartı */
 .support-card {
-    margin-top: 24px;
+    margin-top: 22px;
     padding: 16px;
     border-radius: 12px;
     background: linear-gradient(135deg, #184c42 0%, #1d5b4f 100%);
@@ -231,9 +245,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
-    padding: 8px 12px;
+    padding: 9px 12px;
     border-radius: 8px;
     background: #d1f26a;
     color: #123b34;
