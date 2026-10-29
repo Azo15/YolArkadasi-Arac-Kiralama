@@ -2,11 +2,34 @@
     <DataAnnotationsValidator />
     <ValidationSummary class="validation-summary" />
     <div class="customer-form-grid">
-        <label class="form-field"><span>AD SOYAD *</span><InputText @bind-Value="_customer.CustomerName" disabled="@IsDisabled" placeholder="Örn. Deniz Yılmaz" /><ValidationMessage For="() => _customer.CustomerName" /></label>
-        <label class="form-field"><span>E-POSTA *</span><InputText @bind-Value="_customer.Email" disabled="@IsDisabled" type="email" placeholder="ornek@mail.com" /><ValidationMessage For="() => _customer.Email" /></label>
-        <label class="form-field"><span>TELEFON *</span><InputText @bind-Value="_customer.Phone" disabled="@IsDisabled" type="tel" placeholder="05XX XXX XX XX" /><ValidationMessage For="() => _customer.Phone" /></label>
+        <label class="form-field">
+            <span class="field-label">👤 AD SOYAD <b class="req">*</b></span>
+            <InputText class="custom-input" @bind-Value="_customer.CustomerName" disabled="@IsDisabled" placeholder="Örn. Deniz Yılmaz" />
+            <ValidationMessage For="() => _customer.CustomerName" />
+        </label>
+        <label class="form-field">
+            <span class="field-label">✉️ E-POSTA <b class="req">*</b></span>
+            <InputText class="custom-input" @bind-Value="_customer.Email" disabled="@IsDisabled" type="email" placeholder="ornek@mail.com" />
+            <ValidationMessage For="() => _customer.Email" />
+        </label>
+        <label class="form-field">
+            <span class="field-label">📞 TELEFON <b class="req">*</b></span>
+            <InputText class="custom-input" @bind-Value="_customer.Phone" disabled="@IsDisabled" type="tel" placeholder="05XX XXX XX XX" />
+            <ValidationMessage For="() => _customer.Phone" />
+        </label>
     </div>
-    <div class="form-actions"><span>Rezervasyon ücretsizdir. Ödeme şu anda alınmaz.</span><button class="button-primary submit-button" type="submit" disabled="@IsDisabled">Rezervasyonu tamamla <span>→</span></button></div>
+    <div class="form-actions">
+        <div class="guarantee-badge">
+            <span class="shield-icon">🛡️</span>
+            <div>
+                <strong>Güvenli Rezervasyon</strong>
+                <span>Ücretsiz iptal hakkı, kredi kartsız ön onay</span>
+            </div>
+        </div>
+        <button class="button-primary submit-button" type="submit" disabled="@IsDisabled">
+            Rezervasyonu Tamamla <span class="arrow-icon">→</span>
+        </button>
+    </div>
 </EditForm>
 
 @code {
