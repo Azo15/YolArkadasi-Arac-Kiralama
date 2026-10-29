@@ -69,36 +69,31 @@
     </div>
 </section>
 
-@if (!_loading && _error is null && _showcaseCars.Count > 0)
+@if (!_loading && _error is null && FeaturedCar is not null)
 {
-<section class="hero-car-showcase" aria-label="Araçlarımızdan seçmeler">
-    <div class="showcase-copy">
-        <span class="showcase-kicker"><i></i> YOLA ÇIKMAYA HAZIR</span>
-        <h2>Her yolculuğa<br /><span>bir yol arkadaşı.</span></h2>
-        <p>Şehirden sahil yoluna, sana uygun aracı keşfet.</p>
-        <div class="showcase-controls">
-            <button type="button" class="showcase-arrow" aria-label="Önceki araç" @onclick="PreviousShowcase">←</button>
-        <span class="showcase-count">@((_activeShowcase + 1).ToString("00")) <i>/</i> @_showcaseCars.Count.ToString("00")</span>
-            <button type="button" class="showcase-arrow" aria-label="Sonraki araç" @onclick="NextShowcase">→</button>
+<section class="fleet-feature" aria-label="Öne çıkan araç" aria-live="polite">
+    <div class="fleet-feature-copy">
+        <span class="feature-eyebrow"><i></i> FİLODAN ÖNE ÇIKAN</span>
+        <h2>@FeaturedCar.Brand <span>@FeaturedCar.Model</span></h2>
+        <p>@FeaturedCar.Category <span>·</span> @FeaturedCar.Seats kişilik <span>·</span> @FeaturedCar.Transmission</p>
+        <div class="feature-price"><strong>@FeaturedCar.DailyPrice.ToString("N0") ₺</strong><span>/ günlük kiralama</span></div>
+        <a class="feature-cta" href="cars/@FeaturedCar.Id/rent">Aracı incele <span>→</span></a>
+        <div class="feature-navigation" aria-label="Öne çıkan araç seçimi">
+            <button type="button" class="feature-arrow" aria-label="Önceki araç" @onclick="PreviousShowcase">←</button>
+            <div class="feature-dots">
+                @for (var index = 0; index < _showcaseCars.Count; index++)
+                {
+                    var selectedIndex = index;
+                    <button type="button" class="feature-dot @(_activeShowcase == selectedIndex ? "selected" : "")" aria-label="@($"{_showcaseCars[selectedIndex].Brand} {_showcaseCars[selectedIndex].Model}")" aria-current="@(_activeShowcase == selectedIndex ? "true" : null)" @onclick="() => SelectShowcase(selectedIndex)"></button>
+                }
+            </div>
+            <button type="button" class="feature-arrow" aria-label="Sonraki araç" @onclick="NextShowcase">→</button>
+            <span class="feature-count">@((_activeShowcase + 1).ToString("00")) / @_showcaseCars.Count.ToString("00")</span>
         </div>
     </div>
-    <div class="showcase-stage" aria-live="polite">
-        <div class="showcase-orbit orbit-one"></div>
-        <div class="showcase-orbit orbit-two"></div>
-        <span class="showcase-glow"></span>
-        @for (var offset = -1; offset <= 1; offset++)
-        {
-            var index = (_activeShowcase + offset + _showcaseCars.Count) % _showcaseCars.Count;
-            var car = _showcaseCars[index];
-            <button @key="car.Id" type="button" class="showcase-car @(offset == 0 ? "is-active" : offset < 0 ? "is-previous" : "is-next")" @onclick="() => SelectShowcase(index)" aria-label="@($"{car.Brand} {car.Model} aracını göster")">
-                <img src="@car.ImageUrl" alt="" />
-                @if (offset == 0)
-                {
-                    <span class="showcase-car-label"><b>@car.Brand @car.Model</b><small>@car.Category <i>·</i> @car.DailyPrice.ToString("N0") ₺ / gün</small></span>
-                }
-            </button>
-        }
-        <div class="showcase-glass-note"><span>✦</span> 12 özenle seçilmiş model</div>
+    <div class="fleet-feature-image" @key="FeaturedCar.Id">
+        <img src="@FeaturedCar.ImageUrl" alt="@($"{FeaturedCar.Brand} {FeaturedCar.Model}")" />
+        <div class="feature-image-caption"><span>YOL ARKADAŞIN HAZIR</span><strong>@FeaturedCar.Brand @FeaturedCar.Model</strong></div>
     </div>
 </section>
 }
@@ -155,6 +150,7 @@
     private string? _error;
     private int _activeShowcase;
     private List<Car> _showcaseCars => _cars.Take(5).ToList();
+    private Car? FeaturedCar => _showcaseCars.Count == 0 ? null : _showcaseCars[_activeShowcase % _showcaseCars.Count];
 
     private void PreviousShowcase() { if (_showcaseCars.Count > 0) _activeShowcase = (_activeShowcase - 1 + _showcaseCars.Count) % _showcaseCars.Count; }
     private void NextShowcase() { if (_showcaseCars.Count > 0) _activeShowcase = (_activeShowcase + 1) % _showcaseCars.Count; }
