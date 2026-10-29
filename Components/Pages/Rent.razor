@@ -142,14 +142,35 @@ else
     private string? _bookingCode;
     private bool _success;
     private bool _hasDateConflict;
+    private string? _initializedCarId;
     private bool HasValidDates => _pickupDate.Date >= DateTime.Today && _returnDate.Date > _pickupDate.Date;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        if (_initializedCarId == Id) return;
+        _initializedCarId = Id;
+        _loading = true;
+
         try { _car = (await Cars.GetCarsAsync()).FirstOrDefault(car => car.Id == Id); }
         finally { _loading = false; }
-        RentalState.SetCar(Id);
+
         await BookingState.EnsureLoadedAsync();
+
+        _pickupDate = DateTime.Today.AddDays(1);
+        _returnDate = _pickupDate.AddDays(1);
+        _selectedExtraIds = [];
+
+        // Start with the first available one-day range so a new booking does not open on a conflict.
+        for (var daysAhead = 0; _car is not null && daysAhead < 365 && BookingState.HasConflict(_car.Id, _pickupDate, _returnDate); daysAhead++)
+        {
+            _pickupDate = _pickupDate.AddDays(1);
+            _returnDate = _returnDate.AddDays(1);
+        }
+
+        RentalState.StartNewRental(Id, _pickupDate, _returnDate);
+        _message = null;
+        _bookingCode = null;
+        _success = false;
         RefreshDateConflict();
     }
 

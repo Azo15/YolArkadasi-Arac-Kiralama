@@ -9,6 +9,15 @@ public sealed class RentalState
 
     public event Action? OnChange;
 
+    public void StartNewRental(string carId, DateTime pickupDate, DateTime returnDate)
+    {
+        SelectedCarId = carId;
+        PickupDate = pickupDate.Date;
+        ReturnDate = returnDate.Date;
+        SelectedExtraIds.Clear();
+        NotifyChanged();
+    }
+
     public void SetCar(string? carId)
     {
         if (SelectedCarId == carId) return;
