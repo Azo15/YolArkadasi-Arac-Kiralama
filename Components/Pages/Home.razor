@@ -92,7 +92,7 @@
         </div>
     </div>
     <div class="fleet-feature-image" @key="FeaturedCar.Id">
-        <img src="@FeaturedCar.ImageUrl" alt="@($"{FeaturedCar.Brand} {FeaturedCar.Model}")" />
+        <img class="@(FeaturedCar.Id == "C003" ? "feature-portrait" : "")" src="@FeaturedCar.ImageUrl" alt="@($"{FeaturedCar.Brand} {FeaturedCar.Model}")" />
         <div class="feature-image-caption"><span>YOL ARKADAŞIN HAZIR</span><strong>@FeaturedCar.Brand @FeaturedCar.Model</strong></div>
     </div>
 </section>
