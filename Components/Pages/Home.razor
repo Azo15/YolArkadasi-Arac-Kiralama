@@ -1,41 +1,115 @@
 @page "/"
 @page "/cars"
 @inject CarService Cars
+@implements IDisposable
 
 <PageTitle>Araç Kirala | yolarkadaşı</PageTitle>
 
 <section class="hero-banner">
+    <!-- Arka Plan Araç Slider (Slaydbar Katmanı) -->
+    <div class="hero-slides-wrapper" aria-hidden="true">
+        @for (int i = 0; i < _heroSlideCars.Count; i++)
+        {
+            var car = _heroSlideCars[i];
+            var isActive = (i == _activeHeroSlide);
+            <div class="hero-bg-slide @(isActive ? "active" : "")" style="background-image: url('@car.ImageUrl');"></div>
+        }
+        <div class="hero-glass-overlay"></div>
+    </div>
+
+    <!-- Ön Yüz İçerik ve Yerleşim -->
     <div class="hero-content">
-        <div class="hero-eyebrow-row">
-            <span class="eyebrow-badge">GÜNCEL FİLO 2026</span>
-            <span class="trust-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Güvenli Rezervasyon
-            </span>
-        </div>
-        <h1>Hayalindeki yolculuk burada <span>başlıyor.</span></h1>
-        <p class="hero-description">
-            İster şehir içi ekonomik bir sürüş, ister geniş aile yolculuğu veya prestijli bir lüks sedan. 
-            İhtiyacına uygun aracı seç, şeffaf fiyatlarla dakikalar içinde rezervasyonunu tamamla.
-        </p>
+        <div class="hero-top-row">
+            <!-- Sol Kolon: Başlık, Açıklama ve Butonlar -->
+            <div class="hero-main-col">
+                <div class="hero-eyebrow-row">
+                    <span class="eyebrow-badge">GÜNCEL FİLO 2026</span>
+                    <span class="trust-badge">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Güvenli Rezervasyon
+                    </span>
+                </div>
+                <h1>Hayalindeki yolculuk burada <span>başlıyor.</span></h1>
+                <p class="hero-description">
+                    İster şehir içi ekonomik bir sürüş, ister geniş aile yolculuğu veya prestijli bir lüks sedan. 
+                    İhtiyacına uygun aracı seç, şeffaf fiyatlarla dakikalar içinde rezervasyonunu tamamla.
+                </p>
 
-        <!-- Hızlı Aksiyon Butonları -->
-        <div class="hero-action-buttons">
-            <a href="/cars#fleet" class="hero-btn-primary">
-                <span>Araçları İncele</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-            </a>
-            <a href="/my-bookings" class="hero-btn-secondary">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
-                <span>Rezervasyonlarım</span>
-            </a>
-            <a href="tel:08503400024" class="hero-btn-outline">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <span>7/24 Destek</span>
-            </a>
+                <!-- Hızlı Aksiyon Butonları -->
+                <div class="hero-action-buttons">
+                    <a href="/cars#fleet" class="hero-btn-primary">
+                        <span>Araçları İncele</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+                    </a>
+                    <a href="/my-bookings" class="hero-btn-secondary">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
+                        <span>Rezervasyonlarım</span>
+                    </a>
+                    <a href="tel:08503400024" class="hero-btn-outline">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span>7/24 Destek</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sağ Kolon: Slaydbar Araç Kartı & Navigasyon -->
+            @if (CurrentHeroCar is not null)
+            {
+                <div class="hero-slider-widget" @key="CurrentHeroCar.Id">
+                    <div class="slider-widget-glass">
+                        <div class="widget-header">
+                            <span class="widget-tag">ÖNE ÇIKAN MODEL</span>
+                            <span class="widget-category">@CurrentHeroCar.Category</span>
+                        </div>
+                        <div class="widget-car-title">
+                            <h3>@CurrentHeroCar.Brand <strong>@CurrentHeroCar.Model</strong></h3>
+                            <div class="widget-specs">
+                                <span>@CurrentHeroCar.Transmission</span>
+                                <span>·</span>
+                                <span>@CurrentHeroCar.FuelType</span>
+                                <span>·</span>
+                                <span>@CurrentHeroCar.Seats Kişilik</span>
+                            </div>
+                        </div>
+                        <div class="widget-footer">
+                            <div class="widget-price">
+                                <strong>@CurrentHeroCar.DailyPrice.ToString("N0") ₺</strong>
+                                <small>/ gün</small>
+                            </div>
+                            <a href="cars/@CurrentHeroCar.Id/rent" class="widget-rent-btn">
+                                <span>Hemen Kirala</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slaydbar Kontrol Şeridi -->
+                    <div class="hero-slaydbar-strip">
+                        <button type="button" class="slaydbar-arrow" aria-label="Önceki araç" @onclick="PrevHeroSlide">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+                        </button>
+                        <div class="slaydbar-dots" role="tablist">
+                            @for (int i = 0; i < _heroSlideCars.Count; i++)
+                            {
+                                var idx = i;
+                                var car = _heroSlideCars[idx];
+                                <button type="button" 
+                                        class="slaydbar-dot @(idx == _activeHeroSlide ? "active" : "")" 
+                                        aria-label="@car.Brand @car.Model" 
+                                        @onclick="() => SelectHeroSlide(idx)">
+                                </button>
+                            }
+                        </div>
+                        <button type="button" class="slaydbar-arrow" aria-label="Sonraki araç" @onclick="NextHeroSlide">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                        <span class="slaydbar-count">@((_activeHeroSlide + 1).ToString("00")) / @_heroSlideCars.Count.ToString("00")</span>
+                    </div>
+                </div>
+            }
         </div>
 
-        <!-- Avantaj Rozetleri -->
+        <!-- Alt Bölüm: Avantaj Rozetleri (Şeffaf Cam Kartlar) -->
         <div class="hero-stats-row">
             <div class="stat-pill">
                 <svg class="stat-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -68,35 +142,6 @@
         </div>
     </div>
 </section>
-
-@if (!_loading && _error is null && FeaturedCar is not null)
-{
-<section class="fleet-feature" aria-label="Öne çıkan araç" aria-live="polite">
-    <div class="fleet-feature-copy">
-        <span class="feature-eyebrow"><i></i> FİLODAN ÖNE ÇIKAN</span>
-        <h2>@FeaturedCar.Brand <span>@FeaturedCar.Model</span></h2>
-        <p>@FeaturedCar.Category <span>·</span> @FeaturedCar.Seats kişilik <span>·</span> @FeaturedCar.Transmission</p>
-        <div class="feature-price"><strong>@FeaturedCar.DailyPrice.ToString("N0") ₺</strong><span>/ günlük kiralama</span></div>
-        <a class="feature-cta" href="cars/@FeaturedCar.Id/rent">Aracı incele <span>→</span></a>
-        <div class="feature-navigation" aria-label="Öne çıkan araç seçimi">
-            <button type="button" class="feature-arrow" aria-label="Önceki araç" @onclick="PreviousShowcase">←</button>
-            <div class="feature-dots">
-                @for (var index = 0; index < _showcaseCars.Count; index++)
-                {
-                    var selectedIndex = index;
-                    <button type="button" class="feature-dot @(_activeShowcase == selectedIndex ? "selected" : "")" aria-label="@($"{_showcaseCars[selectedIndex].Brand} {_showcaseCars[selectedIndex].Model}")" aria-current="@(_activeShowcase == selectedIndex ? "true" : null)" @onclick="() => SelectShowcase(selectedIndex)"></button>
-                }
-            </div>
-            <button type="button" class="feature-arrow" aria-label="Sonraki araç" @onclick="NextShowcase">→</button>
-            <span class="feature-count">@((_activeShowcase + 1).ToString("00")) / @_showcaseCars.Count.ToString("00")</span>
-        </div>
-    </div>
-    <div class="fleet-feature-image" @key="FeaturedCar.Id">
-        <img class="@(FeaturedCar.Id == "C003" ? "feature-portrait" : "")" src="@FeaturedCar.ImageUrl" alt="@($"{FeaturedCar.Brand} {FeaturedCar.Model}")" />
-        <div class="feature-image-caption"><span>YOL ARKADAŞIN HAZIR</span><strong>@FeaturedCar.Brand @FeaturedCar.Model</strong></div>
-    </div>
-</section>
-}
 
 <!-- 3 Adımda Nasıl Çalışır Şeridi -->
 <section class="how-it-works-strip">
@@ -148,19 +193,73 @@
     private List<Car> _cars = [];
     private bool _loading = true;
     private string? _error;
-    private int _activeShowcase;
-    private List<Car> _showcaseCars => _cars.Take(5).ToList();
-    private Car? FeaturedCar => _showcaseCars.Count == 0 ? null : _showcaseCars[_activeShowcase % _showcaseCars.Count];
+    private int _activeHeroSlide;
+    private System.Threading.Timer? _sliderTimer;
 
-    private void PreviousShowcase() { if (_showcaseCars.Count > 0) _activeShowcase = (_activeShowcase - 1 + _showcaseCars.Count) % _showcaseCars.Count; }
-    private void NextShowcase() { if (_showcaseCars.Count > 0) _activeShowcase = (_activeShowcase + 1) % _showcaseCars.Count; }
-    private void SelectShowcase(int index) { if (_showcaseCars.Count > 0) _activeShowcase = index; }
+    private List<Car> _heroSlideCars
+    {
+        get
+        {
+            if (_cars.Count == 0) return [];
+            var curated = _cars.Where(c => c.Id is "C008" or "C007" or "C011" or "C006" or "C001")
+                               .OrderByDescending(c => c.DailyPrice)
+                               .ToList();
+            return curated.Count > 0 ? curated : _cars.Take(5).ToList();
+        }
+    }
+
+    private Car? CurrentHeroCar => _heroSlideCars.Count == 0 ? null : _heroSlideCars[_activeHeroSlide % _heroSlideCars.Count];
+
+    private void PrevHeroSlide()
+    {
+        if (_heroSlideCars.Count > 0)
+        {
+            _activeHeroSlide = (_activeHeroSlide - 1 + _heroSlideCars.Count) % _heroSlideCars.Count;
+            RestartSliderTimer();
+        }
+    }
+
+    private void NextHeroSlide()
+    {
+        if (_heroSlideCars.Count > 0)
+        {
+            _activeHeroSlide = (_activeHeroSlide + 1) % _heroSlideCars.Count;
+        }
+    }
+
+    private void SelectHeroSlide(int index)
+    {
+        if (_heroSlideCars.Count > 0 && index >= 0 && index < _heroSlideCars.Count)
+        {
+            _activeHeroSlide = index;
+            RestartSliderTimer();
+        }
+    }
+
+    private void RestartSliderTimer()
+    {
+        _sliderTimer?.Change(TimeSpan.FromSeconds(6), TimeSpan.FromSeconds(5));
+    }
+
+    private void StartSliderTimer()
+    {
+        _sliderTimer?.Dispose();
+        _sliderTimer = new System.Threading.Timer(async _ =>
+        {
+            await InvokeAsync(() =>
+            {
+                NextHeroSlide();
+                StateHasChanged();
+            });
+        }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try 
         { 
             _cars = (await Cars.GetCarsAsync()).ToList(); 
+            StartSliderTimer();
         }
         catch (Exception ex) 
         { 
@@ -170,5 +269,10 @@
         { 
             _loading = false; 
         }
+    }
+
+    public void Dispose()
+    {
+        _sliderTimer?.Dispose();
     }
 }
