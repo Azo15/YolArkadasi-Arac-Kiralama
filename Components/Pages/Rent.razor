@@ -1,7 +1,6 @@
 @page "/cars/{Id}/rent"
 @inject CarService Cars
 @inject BookingState BookingState
-@inject NavigationManager Navigation
 
 <PageTitle>Rezervasyon oluştur | yolarkadaşı</PageTitle>
 
@@ -36,16 +35,7 @@ else
                 <RentalOptions @bind-PickupDate="_pickupDate" @bind-ReturnDate="_returnDate" @bind-SelectedExtraIds="_selectedExtraIds" OnChanged="ClearMessage" />
                 <section class="customer-panel">
                     <div class="extras-heading"><div><span class="eyebrow">SON ADIM</span><h3>İletişim bilgilerin</h3></div><span class="extras-hint">* Zorunlu alanlar</span></div>
-                    <EditForm Model="_customer" OnValidSubmit="CreateBookingAsync">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary class="validation-summary" />
-                        <div class="customer-form-grid">
-                            <label class="form-field"><span>AD SOYAD *</span><InputText @bind-Value="_customer.CustomerName" placeholder="Örn. Deniz Yılmaz" /><ValidationMessage For="() => _customer.CustomerName" /></label>
-                            <label class="form-field"><span>E-POSTA *</span><InputText @bind-Value="_customer.Email" type="email" placeholder="ornek@mail.com" /><ValidationMessage For="() => _customer.Email" /></label>
-                            <label class="form-field"><span>TELEFON *</span><InputText @bind-Value="_customer.Phone" type="tel" placeholder="05XX XXX XX XX" /><ValidationMessage For="() => _customer.Phone" /></label>
-                        </div>
-                        <div class="form-actions"><span>Rezervasyon ücretsizdir. Ödeme şu anda alınmaz.</span><button class="button-primary submit-button" type="submit" disabled="@(!_car.IsAvailable)">Rezervasyonu tamamla <span>→</span></button></div>
-                    </EditForm>
+                    <CustomerForm IsDisabled="@(!_car.IsAvailable)" OnValidCustomerSubmit="CreateBookingAsync" />
                 </section>
             </div>
             <RentalSummary Car="_car" PickupDate="_pickupDate" ReturnDate="_returnDate" SelectedExtraIds="_selectedExtraIds" />
@@ -60,7 +50,6 @@ else
     private DateTime _pickupDate = DateTime.Today.AddDays(1);
     private DateTime _returnDate = DateTime.Today.AddDays(2);
     private HashSet<string> _selectedExtraIds = [];
-    private CustomerInput _customer = new();
     private string? _message;
     private bool _success;
 
@@ -73,7 +62,7 @@ else
 
     private void ClearMessage() => _message = null;
 
-    private async Task CreateBookingAsync()
+    private async Task CreateBookingAsync(CustomerInput customer)
     {
         if (_car is null || !_car.IsAvailable) return;
         if (_pickupDate.Date < DateTime.Today || _returnDate.Date <= _pickupDate.Date)
@@ -98,9 +87,9 @@ else
         {
             Id = $"CAR-{DateTime.Today:yyyy}-{Random.Shared.Next(100, 1000)}",
             CarId = _car.Id,
-            CustomerName = _customer.CustomerName.Trim(),
-            Email = _customer.Email.Trim(),
-            Phone = _customer.Phone.Trim(),
+            CustomerName = customer.CustomerName.Trim(),
+            Email = customer.Email.Trim(),
+            Phone = customer.Phone.Trim(),
             PickupDate = _pickupDate.Date,
             ReturnDate = _returnDate.Date,
             ExtraIds = _selectedExtraIds.ToList(),
@@ -111,7 +100,6 @@ else
             await BookingState.AddAsync(booking);
             _success = true;
             _message = $"Rezervasyonun oluşturuldu. Kodun: {booking.Id}";
-            _customer = new();
         }
         catch (InvalidOperationException ex)
         {
@@ -120,19 +108,4 @@ else
         }
     }
 
-    private sealed class CustomerInput
-    {
-        [Required(ErrorMessage = "Ad soyad alanı zorunludur.")]
-        [StringLength(80, MinimumLength = 3, ErrorMessage = "Ad soyad 3–80 karakter arasında olmalıdır.")]
-        public string CustomerName { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "E-posta alanı zorunludur.")]
-        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
-        public string Email { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Telefon alanı zorunludur.")]
-        [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
-        [StringLength(20, MinimumLength = 10, ErrorMessage = "Telefon numarası 10–20 karakter arasında olmalıdır.")]
-        public string Phone { get; set; } = string.Empty;
-    }
 }
