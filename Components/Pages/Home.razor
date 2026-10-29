@@ -69,6 +69,8 @@
     </div>
 </section>
 
+@if (!_loading && _error is null && _showcaseCars.Count > 0)
+{
 <section class="hero-car-showcase" aria-label="Araçlarımızdan seçmeler">
     <div class="showcase-copy">
         <span class="showcase-kicker"><i></i> YOLA ÇIKMAYA HAZIR</span>
@@ -99,6 +101,7 @@
         <div class="showcase-glass-note"><span>✦</span> 12 özenle seçilmiş model</div>
     </div>
 </section>
+}
 
 <!-- 3 Adımda Nasıl Çalışır Şeridi -->
 <section class="how-it-works-strip">
