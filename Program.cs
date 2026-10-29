@@ -11,6 +11,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(sp.GetRequiredService<NavigationManager>().BaseUri) });
 builder.Services.AddScoped<CarService>();
 builder.Services.AddScoped<BookingState>();
+builder.Services.AddScoped<RentalState>();
 
 var app = builder.Build();
 
