@@ -1,3 +1,430 @@
-.fleet-section{margin-top:36px}.search-panel{display:grid;grid-template-columns:1.3fr repeat(4,minmax(130px,1fr));gap:0;overflow:hidden;margin-bottom:32px;background:#fff;border:1px solid #e5ebe5;border-radius:16px;box-shadow:0 10px 28px rgba(24,52,42,.07)}.filter-field{display:grid;align-content:center;gap:9px;min-width:0;padding:16px 18px;border-right:1px solid #edf0ec}.filter-field:last-child{border:0}.filter-field>span{color:#718077;font-size:9px;font-weight:800;letter-spacing:1.1px}.filter-field input,.filter-field select{width:100%;min-width:0;padding:3px 0;border:0;outline:0;background:transparent;color:#243a31;font-size:12px}.filter-field:focus-within{background:#f7faf4}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:20px}.section-heading h2{margin:7px 0 0;font:750 22px Manrope,sans-serif;letter-spacing:-.7px}.result-count{padding:7px 11px;border-radius:20px;background:#eef4e8;color:#536d43;font-size:11px;font-weight:700}.car-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.car-card{overflow:hidden;background:#fff;border:1px solid #e8ece7;border-radius:15px;box-shadow:0 4px 16px rgba(24,52,42,.045);transition:transform .2s ease,box-shadow .2s ease}.car-card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(24,52,42,.13)}.car-image-wrap{position:relative;height:174px;overflow:hidden;background:#e9eee8}.car-image{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}.car-card:hover .car-image{transform:scale(1.035)}.category-pill,.unavailable-pill{position:absolute;top:12px;padding:6px 10px;border-radius:20px;background:#fff;color:#395149;font-size:10px;font-weight:700;box-shadow:0 2px 8px #172b2018}.category-pill{left:12px}.unavailable-pill{right:12px;background:#fff1ed;color:#a4432e}.car-card-body{padding:17px}.car-title-row{display:flex;justify-content:space-between;gap:12px}.car-title-row h3{margin:0;font:750 16px Manrope,sans-serif;letter-spacing:-.3px}.car-title-row p{margin:4px 0 0;color:#98a19b;font-size:10px}.rating{color:#edae36;font-size:12px}.rating b{color:#3e4b43}.car-specs{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0;color:#78847b;font-size:10px}.car-card-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #edf0ec;padding-top:14px}.car-card-footer>div strong{font:800 17px Manrope}.car-card-footer>div span{margin-left:4px;color:#98a19b;font-size:10px}.button-primary{display:inline-flex;align-items:center;gap:10px;padding:10px 13px;border:0;border-radius:8px;background:#173f36;color:#fff;font-size:11px;font-weight:700;transition:background .2s,transform .2s}.button-primary:hover{transform:translateY(-1px);background:#286253}.button-primary span{color:#d1f26a;font-size:15px}.button-disabled{background:#e9ece7;color:#818c83;pointer-events:none}.button-disabled span{color:#a4aea5}.empty-state{display:grid;justify-items:center;gap:10px;padding:58px 20px;border:1px dashed #dce3da;border-radius:14px;color:#728078;text-align:center}.empty-state strong{color:#33453b}.empty-state p{margin:0;font-size:13px}
-@media(max-width:1150px){.search-panel{grid-template-columns:repeat(3,minmax(0,1fr))}.filter-field:nth-child(3){border-right:0}.filter-field:nth-child(-n+3){border-bottom:1px solid #edf0ec}.car-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.search-panel{grid-template-columns:1fr 1fr}.filter-field{padding:13px}.filter-field:nth-child(odd){border-right:1px solid #edf0ec}.filter-field:nth-child(even){border-right:0}.filter-field:nth-child(-n+4){border-bottom:1px solid #edf0ec}.car-grid{grid-template-columns:1fr}.car-image-wrap{height:195px}.fleet-section{margin-top:28px}.section-heading h2{font-size:19px}.result-count{font-size:10px}}
+.fleet-section {
+    margin-top: 24px;
+}
+
+.search-panel {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(4, minmax(130px, 1fr));
+    gap: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #ffffff;
+    border: 1px solid #e1e7e1;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(24, 52, 42, 0.06);
+}
+
+.filter-field {
+    display: grid;
+    align-content: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 16px 20px;
+    border-right: 1px solid #edf1ec;
+    transition: background 0.18s;
+}
+
+.filter-field:last-child {
+    border-right: 0;
+}
+
+.filter-field:focus-within {
+    background: #f7faf5;
+}
+
+.filter-field > span {
+    color: #6d7f74;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-width: 0;
+    padding: 3px 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #173f36;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-field input::placeholder {
+    color: #a0ada4;
+    font-weight: 400;
+}
+
+/* Hızlı Kategori ve Filtre Çubuğu */
+.quick-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.quick-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 15px;
+    border: 1px solid #dce4dc;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #3b5347;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tag-btn:hover {
+    border-color: #173f36;
+    color: #173f36;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(23, 63, 54, 0.08);
+}
+
+.tag-btn.active {
+    background: #173f36;
+    border-color: #173f36;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(23, 63, 54, 0.2);
+}
+
+.reset-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px dashed #d38d84;
+    border-radius: 30px;
+    background: #fff6f5;
+    color: #b9382c;
+    font-size: 11.5px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-filter-btn:hover {
+    background: #fde8e6;
+    border-color: #b9382c;
+    transform: scale(1.02);
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    margin: 6px 0 0;
+    font: 800 23px Manrope, sans-serif;
+    color: #18352b;
+    letter-spacing: -0.6px;
+}
+
+.result-count {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #e9f3e4;
+    color: #406733;
+    font-size: 11.5px;
+    font-weight: 800;
+}
+
+/* Araç Kartları Grid */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.car-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e5ebe5;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(24, 52, 42, 0.045);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px rgba(24, 52, 42, 0.12);
+    border-color: #c9dbcd;
+}
+
+.card-unavailable {
+    opacity: 0.85;
+}
+
+.car-image-wrap {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    background: #edf1ed;
+}
+
+.car-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.car-card:hover .car-image {
+    transform: scale(1.05);
+}
+
+.category-pill {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: #244638;
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+.unavailable-pill {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 10.5px;
+    font-weight: 800;
+    border: 1px solid #fecaca;
+    box-shadow: 0 3px 8px rgba(185, 28, 28, 0.15);
+}
+
+.available-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: rgba(238, 248, 235, 0.95);
+    backdrop-filter: blur(4px);
+    color: #2e7d32;
+    font-size: 10.5px;
+    font-weight: 800;
+    border: 1px solid #c8e6c9;
+}
+
+.car-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+
+.car-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.car-title-row h3 {
+    margin: 0;
+    font: 800 17.5px Manrope, sans-serif;
+    color: #17342b;
+    letter-spacing: -0.3px;
+}
+
+.car-title-row p {
+    margin: 4px 0 0;
+    color: #839188;
+    font-size: 11px;
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #f59e0b;
+    font-size: 13px;
+}
+
+.rating b {
+    color: #1f362c;
+    font-weight: 800;
+}
+
+.rating small {
+    color: #93a197;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.car-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin: 18px 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f7faf6;
+    color: #556c5e;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.car-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #edf1ed;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-label {
+    color: #829287;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.price-box strong {
+    font: 800 19px Manrope, sans-serif;
+    color: #153e34;
+}
+
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: #173f36;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(23, 63, 54, 0.2);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.button-primary:hover {
+    background: #255c50;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(23, 63, 54, 0.3);
+}
+
+.button-primary span {
+    color: #d1f26a;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.button-primary:hover span {
+    transform: translateX(3px);
+}
+
+.button-disabled {
+    background: #e6ece5 !important;
+    color: #8c978f !important;
+    pointer-events: none;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.button-disabled span {
+    color: #a4afa6 !important;
+}
+
+.empty-state {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    padding: 60px 24px;
+    border: 2px dashed #d5ded4;
+    border-radius: 18px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.empty-emoji {
+    font-size: 38px;
+}
+
+.empty-state strong {
+    color: #1e3c31;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.empty-state p {
+    max-width: 420px;
+    margin: 0;
+    color: #728479;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+    .car-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .search-panel {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .filter-field:nth-child(3) {
+        border-right: 0;
+    }
+    .filter-field:nth-child(-n+3) {
+        border-bottom: 1px solid #edf1ec;
+    }
+}
+
+@media (max-width: 680px) {
+    .search-panel {
+        grid-template-columns: 1fr;
+    }
+    .filter-field {
+        border-right: 0 !important;
+        border-bottom: 1px solid #edf1ec;
+    }
+    .car-grid {
+        grid-template-columns: 1fr;
+    }
+    .quick-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
