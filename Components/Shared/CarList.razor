@@ -4,6 +4,7 @@
         <label class="filter-field"><span>KATEGORİ</span><select @bind="_category"><option value="">Tüm kategoriler</option>@foreach (var category in Categories){<option value="@category">@category</option>}</select></label>
         <label class="filter-field"><span>YAKIT TÜRÜ</span><select @bind="_fuel"><option value="">Tümü</option>@foreach (var fuel in FuelTypes){<option value="@fuel">@fuel</option>}</select></label>
         <label class="filter-field"><span>VİTES</span><select @bind="_transmission"><option value="">Tümü</option>@foreach (var transmission in Transmissions){<option value="@transmission">@transmission</option>}</select></label>
+        <label class="filter-field"><span>MAKSİMUM GÜNLÜK FİYAT</span><select @bind="_maximumDailyPrice"><option value="0">Sınır yok</option><option value="1500">1.500 ₺</option><option value="2500">2.500 ₺</option><option value="3500">3.500 ₺</option><option value="5000">5.000 ₺</option></select></label>
     </div>
     <div class="section-heading"><div><span class="eyebrow">SENİN İÇİN SEÇTİK</span><h2>Kiralamaya hazır araçlar</h2></div><span class="result-count">@FilteredCars.Count araç bulundu</span></div>
     @if (FilteredCars.Count == 0)
@@ -47,5 +48,7 @@
         $"{car.Brand} {car.Model}".Contains(_query, StringComparison.CurrentCultureIgnoreCase) &&
         (_category.Length == 0 || car.Category == _category) &&
         (_fuel.Length == 0 || car.FuelType == _fuel) &&
-        (_transmission.Length == 0 || car.Transmission == _transmission)).ToList();
+        (_transmission.Length == 0 || car.Transmission == _transmission) &&
+        (_maximumDailyPrice == 0 || car.DailyPrice <= _maximumDailyPrice)).ToList();
+    private decimal _maximumDailyPrice;
 }
