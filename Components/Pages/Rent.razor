@@ -1,6 +1,7 @@
 @page "/cars/{Id}/rent"
 @inject CarService Cars
 @inject BookingState BookingState
+@inject RentalState RentalState
 
 <PageTitle>Rezervasyon oluştur | yolarkadaşı</PageTitle>
 
@@ -21,6 +22,10 @@ else
         {
             <div class="alert-message error-message">Bu araç şu anda kiralanabilir durumda değil. Başka bir araç seçebilirsin.</div>
         }
+        @if (_hasDateConflict)
+        {
+            <div class="alert-message error-message conflict-alert" role="alert">Bu araç seçtiğiniz tarihlerde rezerve edilmiştir!</div>
+        }
         @if (!string.IsNullOrWhiteSpace(_message))
         {
             <div class="alert-message @(_success ? "success-message" : "error-message")">@_message</div>
@@ -32,10 +37,10 @@ else
                     <div class="selected-car-info"><span class="category-pill-inline">@_car.Category</span><h2>@_car.Brand @_car.Model</h2><p>@_car.Seats kişi · @_car.Transmission · @_car.FuelType</p><strong>@_car.DailyPrice.ToString("N0") ₺ <small>/ gün</small></strong></div>
                     <span class="selected-check">✓</span>
                 </section>
-                <RentalOptions @bind-PickupDate="_pickupDate" @bind-ReturnDate="_returnDate" @bind-SelectedExtraIds="_selectedExtraIds" OnChanged="ClearMessage" />
+                <RentalOptions @bind-PickupDate="_pickupDate" @bind-ReturnDate="_returnDate" @bind-SelectedExtraIds="_selectedExtraIds" OnChanged="OnSelectionChanged" />
                 <section class="customer-panel">
                     <div class="extras-heading"><div><span class="eyebrow">SON ADIM</span><h3>İletişim bilgilerin</h3></div><span class="extras-hint">* Zorunlu alanlar</span></div>
-                    <CustomerForm IsDisabled="@(!_car.IsAvailable)" OnValidCustomerSubmit="CreateBookingAsync" />
+                    <CustomerForm IsDisabled="@(!_car.IsAvailable || _hasDateConflict || !HasValidDates)" OnValidCustomerSubmit="CreateBookingAsync" />
                 </section>
             </div>
             <RentalSummary Car="_car" PickupDate="_pickupDate" ReturnDate="_returnDate" SelectedExtraIds="_selectedExtraIds" />
@@ -52,19 +57,34 @@ else
     private HashSet<string> _selectedExtraIds = [];
     private string? _message;
     private bool _success;
+    private bool _hasDateConflict;
+    private bool HasValidDates => _pickupDate.Date >= DateTime.Today && _returnDate.Date > _pickupDate.Date;
 
     protected override async Task OnInitializedAsync()
     {
         try { _car = (await Cars.GetCarsAsync()).FirstOrDefault(car => car.Id == Id); }
         finally { _loading = false; }
+        RentalState.SetCar(Id);
         await BookingState.EnsureLoadedAsync();
+        RefreshDateConflict();
     }
 
-    private void ClearMessage() => _message = null;
+    private void OnSelectionChanged()
+    {
+        _message = null;
+        RefreshDateConflict();
+    }
+
+    private void RefreshDateConflict()
+    {
+        _hasDateConflict = _car is not null && HasValidDates && BookingState.HasConflict(_car.Id, _pickupDate, _returnDate);
+    }
 
     private async Task CreateBookingAsync(CustomerInput customer)
     {
         if (_car is null || !_car.IsAvailable) return;
+        RefreshDateConflict();
+        if (_hasDateConflict) return;
         if (_pickupDate.Date < DateTime.Today || _returnDate.Date <= _pickupDate.Date)
         {
             _message = "Teslim alma tarihi bugün veya sonrası, iade tarihi teslim alma tarihinden sonra olmalıdır.";
