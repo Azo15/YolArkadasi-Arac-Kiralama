@@ -1,0 +1,22 @@
+<EditForm Model="_customer" OnValidSubmit="SubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="validation-summary" />
+    <div class="customer-form-grid">
+        <label class="form-field"><span>AD SOYAD *</span><InputText @bind-Value="_customer.CustomerName" disabled="@IsDisabled" placeholder="Örn. Deniz Yılmaz" /><ValidationMessage For="() => _customer.CustomerName" /></label>
+        <label class="form-field"><span>E-POSTA *</span><InputText @bind-Value="_customer.Email" disabled="@IsDisabled" type="email" placeholder="ornek@mail.com" /><ValidationMessage For="() => _customer.Email" /></label>
+        <label class="form-field"><span>TELEFON *</span><InputText @bind-Value="_customer.Phone" disabled="@IsDisabled" type="tel" placeholder="05XX XXX XX XX" /><ValidationMessage For="() => _customer.Phone" /></label>
+    </div>
+    <div class="form-actions"><span>Rezervasyon ücretsizdir. Ödeme şu anda alınmaz.</span><button class="button-primary submit-button" type="submit" disabled="@IsDisabled">Rezervasyonu tamamla <span>→</span></button></div>
+</EditForm>
+
+@code {
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public EventCallback<CustomerInput> OnValidCustomerSubmit { get; set; }
+
+    private CustomerInput _customer = new();
+
+    private async Task SubmitAsync()
+    {
+        await OnValidCustomerSubmit.InvokeAsync(_customer);
+    }
+}
