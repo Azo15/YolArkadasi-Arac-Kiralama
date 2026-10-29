@@ -4,23 +4,113 @@
 
 <PageTitle>Araç Kirala | yolarkadaşı</PageTitle>
 
-<section class="welcome-row">
-    <div><span class="eyebrow">ÖZGÜRCE YOLA ÇIK</span><h1>Yolculuğun burada <span>başlıyor.</span></h1><p>İhtiyacına uygun aracı bul, tarihlerini seç ve gerisini bize bırak.</p></div>
-    <div class="welcome-badge"><span>✦</span> Güvenli ve kolay kiralama</div>
+<section class="hero-banner">
+    <div class="hero-content">
+        <div class="hero-eyebrow-row">
+            <span class="eyebrow-badge">✦ 2026 GÜNCEL FİLO</span>
+            <span class="trust-badge">🛡️ %100 Güvenli & Kaskolu</span>
+        </div>
+        <h1>Hayalindeki yolculuk burada <span>başlıyor.</span></h1>
+        <p class="hero-description">
+            İster şehir içi ekonomik bir kaçamak, ister ailenle konforlu bir SUV macerası veya prestijli bir lüks sedan. 
+            İhtiyacına uygun aracı seç, saniyeler içinde rezervasyonunu oluştur ve yola çık.
+        </p>
+
+        <!-- Hızlı Aksiyon Butonları -->
+        <div class="hero-action-buttons">
+            <a href="cars#fleet" class="hero-btn-primary">
+                🚗 Araçları İncele <span>↓</span>
+            </a>
+            <a href="my-bookings" class="hero-btn-secondary">
+                📋 Rezervasyonlarımı Gör
+            </a>
+            <a href="tel:08503400024" class="hero-btn-outline">
+                📞 7/24 Destek: 0850 340 00 24
+            </a>
+        </div>
+
+        <!-- Avantaj Rozetleri -->
+        <div class="hero-stats-row">
+            <div class="stat-pill">
+                <span class="stat-icon">⚡</span>
+                <div>
+                    <strong>3 Dakikada Onay</strong>
+                    <small>Kredi kartsız ön onay</small>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🔄</span>
+                <div>
+                    <strong>Ücretsiz İptal</strong>
+                    <small>Kesintisiz geri iade</small>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🚘</span>
+                <div>
+                    <strong>12+ Model Araç</strong>
+                    <small>Düzenli bakımlı filo</small>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🛡️</span>
+                <div>
+                    <strong>Tam Muafiyet</strong>
+                    <small>Kapsamlı güvence</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
-@if (_loading)
-{
-    <div class="loading-state"><span class="loader"></span><p>Araçlar yükleniyor...</p></div>
-}
-else if (_error is not null)
-{
-    <div class="empty-state"><strong>Araç listesi şu an yüklenemedi.</strong><p>@_error</p></div>
-}
-else
-{
-    <CarList Cars="_cars" />
-}
+<!-- 3 Adımda Nasıl Çalışır Bilgi Şeridi -->
+<section class="how-it-works-strip">
+    <div class="step-card">
+        <span class="step-num">01</span>
+        <div class="step-icon-wrap">🚗</div>
+        <div>
+            <strong>1. Aracını Belirle</strong>
+            <p>Kategori, yakıt ve bütçene göre en uygun aracı filtrele.</p>
+        </div>
+    </div>
+    <div class="step-card">
+        <span class="step-num">02</span>
+        <div class="step-icon-wrap">📅</div>
+        <div>
+            <strong>2. Tarihleri Seç</strong>
+            <p>Teslim ve iade tarihlerini belirle, ek hizmetlerini ekle.</p>
+        </div>
+    </div>
+    <div class="step-card">
+        <span class="step-num">03</span>
+        <div class="step-icon-wrap">✓</div>
+        <div>
+            <strong>3. Kodunu Al & Yola Çık</strong>
+            <p>Benzersiz rezervasyon kodunla aracını hemen teslim al.</p>
+        </div>
+    </div>
+</section>
+
+<div id="fleet">
+    @if (_loading)
+    {
+        <div class="loading-state">
+            <span class="loader"></span>
+            <p>Araç filosu yükleniyor...</p>
+        </div>
+    }
+    else if (_error is not null)
+    {
+        <div class="empty-state">
+            <strong>Araç listesi şu an yüklenemedi.</strong>
+            <p>@_error</p>
+        </div>
+    }
+    else
+    {
+        <CarList Cars="_cars" />
+    }
+</div>
 
 @code {
     private List<Car> _cars = [];
@@ -29,8 +119,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        try { _cars = (await Cars.GetCarsAsync()).ToList(); }
-        catch (Exception ex) { _error = ex.Message; }
-        finally { _loading = false; }
+        try 
+        { 
+            _cars = (await Cars.GetCarsAsync()).ToList(); 
+        }
+        catch (Exception ex) 
+        { 
+            _error = ex.Message; 
+        }
+        finally 
+        { 
+            _loading = false; 
+        }
     }
 }
