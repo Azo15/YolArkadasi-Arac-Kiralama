@@ -1,3 +1,6 @@
+@inject RentalState RentalState
+@implements IDisposable
+
 <section class="rental-options" aria-label="Kiralama tarihleri ve ek hizmetler">
     <div class="rental-date-grid">
         <label class="form-field"><span>TESLİM ALMA TARİHİ</span><input type="date" min="@Today" @bind="PickupDate" @bind:after="OnSelectionChanged" /></label>
@@ -32,8 +35,15 @@
         new("extra-driver", "Ek sürücü", 150, "Direksiyonu yol arkadaşınla paylaş")
     ];
 
+    protected override void OnInitialized()
+    {
+        RentalState.SetDates(PickupDate, ReturnDate);
+        RentalState.OnChange += HandleStateChanged;
+    }
+
     private async Task OnSelectionChanged()
     {
+        RentalState.SetDates(PickupDate, ReturnDate);
         await PickupDateChanged.InvokeAsync(PickupDate);
         await ReturnDateChanged.InvokeAsync(ReturnDate);
         await OnChanged.InvokeAsync();
@@ -41,9 +51,14 @@
 
     private async Task ToggleExtra(string id, bool selected)
     {
+        RentalState.ToggleExtra(id, selected);
         var next = new HashSet<string>(SelectedExtraIds);
         if (selected) next.Add(id); else next.Remove(id);
         await SelectedExtraIdsChanged.InvokeAsync(next);
         await OnChanged.InvokeAsync();
     }
+
+    private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => RentalState.OnChange -= HandleStateChanged;
 }
