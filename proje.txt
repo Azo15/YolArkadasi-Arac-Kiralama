@@ -1,75 +1,38 @@
 ARAÇ KİRALAMA VE REZERVASYON UYGULAMASI
-Proje adı: YolArkadaşı
+Proje: YolArkadaşı
 
-PROJE ÜYELERİ VE GÖREVLERİ
-1. Öğrenci numarası: [Teslimden önce doldurulacak]
-   Ad Soyad: [Teslimden önce doldurulacak]
-   Görevler: Blazor arayüzü, araç listeleme ve filtreleme, kiralama ve rezervasyon akışı, doğrulama, durum yönetimi ve teslim dokümantasyonu.
+PROJE ÜYESİ
+Öğrenci numarası: 5230505081
+Ad soyad: Azo SMAİL
+Görev: Uygulamanın arayüzü, araç filtreleme ve rezervasyon akışının geliştirilmesi; doğrulama, durum yönetimi ve dokümantasyon.
 
-1. MİMARİ VE TEKNOLOJİ
-- .NET 9 ve C# kullanılarak Blazor Web App geliştirildi.
-- Blazor Interactive Server, kullanıcı etkileşimli Razor bileşenlerini sunucu bağlantısı üzerinden çalıştırır.
-- Araç kataloğu `wwwroot/data/cars.json` dosyasından `HttpClient` ve `CarService` ile asenkron yüklenir. Örnek veri kümesinde 12 araç ve 4 kategori vardır.
-- Arayüz küçük Razor bileşenlerine ayrılmıştır. Bileşen parametreleri ve `EventCallback` kullanımıyla seçimler üst sayfaya aktarılır.
-- Bileşenlere özel stiller `.razor.css` dosyalarında tutulur (Scoped CSS); genel sayfa ve yerleşim stilleri `wwwroot/app.css` içindedir.
-- `RentalState` scoped servisi araç, tarih ve ek hizmet seçimlerini sayfalar arasında taşır. Rezervasyon kayıtları `BookingState` üzerinden yönetilir; tarayıcı `localStorage` alanında kalıcı tutulur.
-- Form doğrulaması `EditForm`, `DataAnnotationsValidator`, `ValidationMessage` ve `CustomerInput` üzerindeki Data Annotations kurallarıyla yapılır.
-- Bu proje eğitim prototipidir; gerçek ödeme, merkezi veritabanı ve farklı tarayıcı kullanıcıları arasında eşzamanlı rezervasyon altyapısı içermez.
+TEKNOLOJİ VE MİMARİ
+- .NET 9, C# ve Blazor Web App (Interactive Server).
+- 15 araç ve 4 kategoriden oluşan katalog `wwwroot/data/cars.json` dosyasından `CarService` ve `HttpClient` ile asenkron yüklenir.
+- Bileşen stilleri `.razor.css` dosyalarında, ortak stiller `wwwroot/app.css` dosyasındadır.
+- `RentalState` araç/tarih/ek hizmet seçimlerini; `BookingState` rezervasyonları yönetir. Rezervasyonlar aynı tarayıcının `localStorage` alanında saklanır.
+- Uygulama eğitim prototipidir. Gerçek ödeme, merkezi veritabanı ve tarayıcılar arası ortak rezervasyon içermez.
 
-2. BİLEŞEN HİYERARŞİSİ
-- `Components/Pages/Home.razor` (`/`, `/cars`): araç verisini yükler, tanıtım alanını ve araç listesini sunar.
-  - `Components/Shared/CarList.razor`: metin araması; kategori, yakıt, vites ve maksimum günlük fiyat filtreleri; araç kartları.
-- `Components/Pages/Rent.razor` (`/cars/{id}/rent`): seçilen araç için rezervasyon akışını yönetir; tarih çakışmasını kontrol eder ve kaydı oluşturur.
-  - `Components/Shared/RentalOptions.razor`: teslim/iade tarihleri ile ek hizmet seçimini gösterir; değişiklikleri `RentalState` ile eşitler.
-  - `Components/Shared/RentalSummary.razor`: gün sayısını ve seçili ek hizmetleri kullanarak toplam fiyatı anlık gösterir.
-  - `Components/Shared/CustomerForm.razor`: müşteri iletişim bilgilerini doğrular ve geçerli modeli `EventCallback` ile `Rent.razor` sayfasına gönderir.
-- `Components/Pages/MyBookings.razor` (`/my-bookings`): rezervasyonları, durumlarını, toplam tutarlarını gösterir ve uygun gelecek rezervasyonlarını iptal eder.
+SAYFALAR VE BİLEŞENLER
+- `Home.razor` (`/`, `/cars`): tanıtım, öne çıkan araç slaytı ve araç kataloğu.
+- `CarList.razor`: arama, kategori/yakıt/vites/fiyat filtreleri ve araç kartları.
+- `Rent.razor` (`/cars/{id}/rent`): kiralama akışı, müsaitlik ve tarih çakışması kontrolü.
+  - `RentalOptions.razor`: teslim/iade tarihleri ve ek hizmetler.
+  - `RentalSummary.razor`: güncel fiyat özeti.
+  - `CustomerForm.razor`: Data Annotations ile müşteri bilgisi doğrulama.
+- `MyBookings.razor` (`/my-bookings`): rezervasyonları, durumları ve iptal işlemini gösterir.
 
-3. ÇALIŞTIRMA
-1. .NET 9 SDK kurulu olmalıdır.
-2. Proje klasöründe `dotnet run` komutunu çalıştırın.
-3. Terminalde belirtilen yerel HTTP/HTTPS adresini tarayıcıda açın.
+ÇALIŞTIRMA
+.NET 9 SDK kurulu olmalı. Proje klasöründe `dotnet run` komutunu çalıştırın; terminalde verilen adresi açın (HTTP profili: `http://localhost:5216`).
 
-4. DEĞERLENDİRME KRİTERLERİ İÇİN VİDEO TEST REHBERİ
-Videoda uygulamayı çalıştırın; ekranı ve temel kod yapısını gösterin. Her adımda gözlenen sonucu anlatın. Çalışmayan veya tamamlanmamış özellik varsa açıkça belirtin.
+SUNUM / VİDEO KONTROL LİSTESİ
+1. `/cars`: katalog, araç görselleri ve araç özelliklerini gösterin.
+2. Arama ile kategori, yakıt, vites ve maksimum fiyat filtrelerini deneyin; sonuçsuz aramayı ve filtre sıfırlamayı gösterin.
+3. Bir aracı kiralayın; tarihleri ve ek hizmetleri değiştirip güncel fiyatı gösterin.
+4. Formu boş ve hatalı bilgilerle göndererek doğrulamayı; sonra geçerli bilgilerle rezervasyon oluşturmayı ve kodu gösterin.
+5. Aynı araçta çakışan tarih uyarısını ve gönderme düğmesinin pasif kaldığını; ardından uygun tarih seçilebildiğini gösterin.
+6. `/my-bookings` sayfasında kaydı ve durumunu gösterin. Yenileme sonrası kaydın korunduğunu, başlangıcı gelmemiş rezervasyonun iptalini ve durum bildirimini gösterin.
+7. Geniş ve mobil ekranda sayfaları kontrol edin; temel bileşenleri ve servisleri kısaca tanıtın.
 
-A. JSON, servis ve araç listesi
-1. `/cars` adresini açın; araç kartlarının yüklendiğini ve JSON'daki marka, model, kategori, yakıt, vites, koltuk ve günlük fiyat bilgilerinin gösterildiğini belirtin.
-2. Kaynak kodda `wwwroot/data/cars.json` içindeki araç sayısını (en az 12) ve `Services/CarService.cs` üzerinden asenkron yüklemeyi gösterin.
-
-B. Arama ve filtreleme
-1. Arama alanına marka veya model yazın; kart listesinin yazarken daraldığını gösterin.
-2. Kategori, yakıt türü ve vites filtrelerini tek tek değiştirin.
-3. Maksimum günlük fiyat filtresinde bir sınır seçin; sınırdan pahalı araçların listeden kalktığını gösterin.
-4. Filtreleri eşleştirmeyen bir değer girerek boş sonuç mesajını gösterin; ardından filtreleri geri alın.
-
-C. Rezervasyon ve dinamik fiyat
-1. Kiralanabilir bir araçta “Aracı seç” bağlantısına tıklayın.
-2. Teslim alma ve iade tarihlerini değiştirin; kiralama gün sayısının ve araç toplamının güncellendiğini gösterin.
-3. Tam kapsamlı güvence, çocuk koltuğu ve ek sürücüyü ayrı ayrı seçip çıkarın; özet tutarının günlük fiyatlara göre anlık değiştiğini gösterin.
-
-D. Form doğrulama ve rezervasyon oluşturma
-1. Formu boş göndererek zorunlu alan uyarılarını gösterin.
-2. Hatalı e-posta, telefon ve çok kısa ad-soyad deneyin; doğrulama mesajlarını gösterin.
-3. Geçerli bilgiler girip rezervasyonu tamamlayın; başarı mesajını ve benzersiz rezervasyon kodunu gösterin.
-
-E. Çakışma kontrolü
-1. Aynı araç için oluşturduğunuz rezervasyonun tarih aralığıyla kesişen tarihleri seçin.
-2. Tarih değişikliğinden sonra belirgin “Bu araç seçtiğiniz tarihlerde rezerve edilmiştir!” uyarısının göründüğünü ve gönderme düğmesinin pasif kaldığını gösterin.
-3. Çakışmayan bir tarih aralığı seçtiğinizde uyarının kalktığını gösterin.
-
-F. Kalıcılık ve iptal
-1. `/my-bookings` sayfasını açıp yeni kaydın araç, kod, tarih, müşteri, durum ve tutar bilgilerini gösterin.
-2. Sayfayı/tarayıcı sekmesini yenileyin; rezervasyonun localStorage üzerinden korunarak tekrar listelendiğini gösterin.
-3. Başlangıç tarihi henüz gelmemiş kayıtta “Rezervasyonu iptal et” düğmesine basın; başarılı bildirim ve “İptal Edildi” rozetini gösterin.
-4. Tamamlanmış kayıt için gri durum etiketini ve artık iptal düğmesi gösterilmediğini açıklayın. Uygunsa aktif rezervasyon için yeşil “Aktif” etiketini gösterin.
-
-G. Tasarım ve teslim
-1. Geniş ekran ve dar mobil görünümde menü, filtreler, araç kartları, kiralama formu ve rezervasyon listesinin taşmadan düzenlendiğini gösterin.
-2. Kısa kod turunda `CarList`, `RentalOptions`, `RentalSummary`, `CustomerForm`, `RentalState` ve `BookingState` sorumluluklarını açıklayın.
-3. Son teslim için proje kaynak klasörünü ZIP/RAR biçiminde sıkıştırın; videoyu ve bu dokümanı pakete ekleyin.
-
-TESLİM ÖNCESİ
-- Köşeli parantez içindeki öğrenci numarası ve ad-soyad alanlarını gerçek bilgilerle doldurun.
-- Video çekiminden önce bütün adımları uygulamada gerçekten deneyin; çalışmayan veya eksik noktaları videoda açıkça belirtin.
-- Projeyi ZIP/RAR olarak paketleyin ve anlatım videosunu teslim klasörüne ekleyin.
+TESLİM
+Videoda gerçekten denenen akışları gösterin ve varsa çalışmayan noktaları belirtin. Bu dosyayı ve videoyu proje kaynaklarıyla birlikte ZIP/RAR paketine ekleyin.
