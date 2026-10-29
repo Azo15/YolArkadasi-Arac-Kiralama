@@ -131,7 +131,7 @@
                                 <strong>@car.DailyPrice.ToString("N0") ₺</strong>
                             </div>
                             <a class="button-primary @(car.IsAvailable ? "" : "button-disabled")" 
-                               href="@(car.IsAvailable ? $"cars/{car.Id}/rent" : "#")" 
+                               href="@(car.IsAvailable ? $"/cars/{car.Id}/rent" : "#")" 
                                aria-disabled="@(!car.IsAvailable)">
                                 @(car.IsAvailable ? "Hemen Kirala" : "Müsait Değil") 
                                 <span>→</span>
