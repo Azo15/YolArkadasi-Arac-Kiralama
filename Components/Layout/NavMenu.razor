@@ -1,13 +1,76 @@
 <aside class="sidebar">
-    <a class="brand" href="">
+    <a class="brand" href="cars">
         <span class="brand-mark">Y</span>
-        <span>yol<span class="brand-light">arkadaşı</span><small>ARAÇ KİRALAMA</small></span>
+        <span>
+            yol<span class="brand-light">arkadaşı</span>
+            <small>ARAÇ KİRALAMA PLATFORMU</small>
+        </span>
     </a>
-    <div class="sidebar-label">MENÜ</div>
+
+    <div class="sidebar-section-title">ANA MENÜ</div>
     <nav class="nav-links" aria-label="Ana menü">
-        <NavLink class="nav-link" href="cars"><span>⌂</span> Araçları Keşfet</NavLink>
-        <NavLink class="nav-link" href="my-bookings"><span>▤</span> Rezervasyonlarım</NavLink>
+        <NavLink class="nav-link" href="cars" Match="NavLinkMatch.All">
+            <span class="nav-icon">🚗</span>
+            <span class="nav-text">Araçları Keşfet</span>
+            <span class="nav-badge">12</span>
+        </NavLink>
+        <NavLink class="nav-link" href="my-bookings">
+            <span class="nav-icon">📋</span>
+            <span class="nav-text">Rezervasyonlarım</span>
+        </NavLink>
     </nav>
-    <div class="sidebar-note"><span class="note-icon">✦</span><strong>Yolun açık olsun.</strong><p>Bir sonraki macerana<br />güvenle yola çık.</p></div>
-    <div class="sidebar-footer"><span class="status-dot"></span> Eğitim projesi <span class="footer-version">v1.0</span></div>
+
+    <div class="sidebar-section-title">POPÜLER SEGMENTLER</div>
+    <div class="sidebar-shortcuts">
+        <a class="shortcut-item" href="cars">
+            <span class="shortcut-icon">⚡</span>
+            <span>Ekonomik Sınıf</span>
+            <small>1.050 ₺'den</small>
+        </a>
+        <a class="shortcut-item" href="cars">
+            <span class="shortcut-icon">🚙</span>
+            <span>SUV & Aile</span>
+            <small>1.850 ₺'den</small>
+        </a>
+        <a class="shortcut-item" href="cars">
+            <span class="shortcut-icon">👑</span>
+            <span>Lüks & Premium</span>
+            <small>4.200 ₺'den</small>
+        </a>
+    </div>
+
+    <div class="sidebar-section-title">GÜVENCELERİMİZ</div>
+    <div class="sidebar-perks">
+        <div class="perk-item">
+            <span class="perk-dot">🛡️</span>
+            <div><strong>%100 Tam Kasko</strong><span>Muafiyetsiz güvence</span></div>
+        </div>
+        <div class="perk-item">
+            <span class="perk-dot">⚡</span>
+            <div><strong>Anında Ön Onay</strong><span>Kredi kartsız rezervasyon</span></div>
+        </div>
+        <div class="perk-item">
+            <span class="perk-dot">🔄</span>
+            <div><strong>Ücretsiz İptal</strong><span>Son 24 saate kadar</span></div>
+        </div>
+    </div>
+
+    <!-- 7/24 Destek Kartı -->
+    <div class="support-card">
+        <div class="support-header">
+            <span class="support-badge">7/24 YOL YARDIM</span>
+            <span class="online-indicator"></span>
+        </div>
+        <strong>0850 340 00 24</strong>
+        <p>Yolculuğun boyunca kesintisiz müşteri desteği</p>
+        <a class="support-action" href="tel:08503400024">
+            📞 Çağrı Başlat
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span>Sistem Aktif & Güvenli</span>
+        <span class="footer-version">v1.2 Pro</span>
+    </div>
 </aside>
