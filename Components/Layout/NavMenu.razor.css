@@ -57,11 +57,23 @@
 }
 
 .sidebar-section-title {
-    margin: 22px 0 9px 8px;
-    color: #799e93;
-    font-size: 9.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 25px 0 10px 8px;
+    color: #91ada4;
+    font-size: 9px;
     font-weight: 800;
-    letter-spacing: 1.4px;
+    letter-spacing: 1.65px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.sidebar-section-title::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, rgba(145, 173, 164, 0.24), transparent);
 }
 
 .nav-links {
@@ -73,13 +85,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 11px 14px;
+    padding: 11px 13px;
     border-radius: 10px;
     color: #c0d3cd;
     font-weight: 600;
     font-size: 13px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .nav-svg {
@@ -130,7 +142,7 @@
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .shortcut-dot {
@@ -254,7 +266,7 @@
     font-size: 11px;
     font-weight: 800;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .support-action:hover {
