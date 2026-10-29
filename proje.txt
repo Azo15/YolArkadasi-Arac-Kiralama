@@ -1,38 +1,10 @@
 ARAÇ KİRALAMA VE REZERVASYON UYGULAMASI
-Proje: YolArkadaşı
+Proje adı: YolArkadaşı
 
-PROJE ÜYESİ
+PROJE ÜYESİ VE GÖREV DAĞILIMI
+
+Bu proje bireysel olarak hazırlanmıştır. Projenin geliştirilmesi ve aşağıdaki görevlerin tamamı tek proje üyesi tarafından gerçekleştirilmiştir.
+
 Öğrenci numarası: 5230505081
 Ad soyad: Azo SMAİL
-Görev: Uygulamanın arayüzü, araç filtreleme ve rezervasyon akışının geliştirilmesi; doğrulama, durum yönetimi ve dokümantasyon.
-
-TEKNOLOJİ VE MİMARİ
-- .NET 9, C# ve Blazor Web App (Interactive Server).
-- 15 araç ve 4 kategoriden oluşan katalog `wwwroot/data/cars.json` dosyasından `CarService` ve `HttpClient` ile asenkron yüklenir.
-- Bileşen stilleri `.razor.css` dosyalarında, ortak stiller `wwwroot/app.css` dosyasındadır.
-- `RentalState` araç/tarih/ek hizmet seçimlerini; `BookingState` rezervasyonları yönetir. Rezervasyonlar aynı tarayıcının `localStorage` alanında saklanır.
-- Uygulama eğitim prototipidir. Gerçek ödeme, merkezi veritabanı ve tarayıcılar arası ortak rezervasyon içermez.
-
-SAYFALAR VE BİLEŞENLER
-- `Home.razor` (`/`, `/cars`): tanıtım, öne çıkan araç slaytı ve araç kataloğu.
-- `CarList.razor`: arama, kategori/yakıt/vites/fiyat filtreleri ve araç kartları.
-- `Rent.razor` (`/cars/{id}/rent`): kiralama akışı, müsaitlik ve tarih çakışması kontrolü.
-  - `RentalOptions.razor`: teslim/iade tarihleri ve ek hizmetler.
-  - `RentalSummary.razor`: güncel fiyat özeti.
-  - `CustomerForm.razor`: Data Annotations ile müşteri bilgisi doğrulama.
-- `MyBookings.razor` (`/my-bookings`): rezervasyonları, durumları ve iptal işlemini gösterir.
-
-ÇALIŞTIRMA
-.NET 9 SDK kurulu olmalı. Proje klasöründe `dotnet run` komutunu çalıştırın; terminalde verilen adresi açın (HTTP profili: `http://localhost:5216`).
-
-SUNUM / VİDEO KONTROL LİSTESİ
-1. `/cars`: katalog, araç görselleri ve araç özelliklerini gösterin.
-2. Arama ile kategori, yakıt, vites ve maksimum fiyat filtrelerini deneyin; sonuçsuz aramayı ve filtre sıfırlamayı gösterin.
-3. Bir aracı kiralayın; tarihleri ve ek hizmetleri değiştirip güncel fiyatı gösterin.
-4. Formu boş ve hatalı bilgilerle göndererek doğrulamayı; sonra geçerli bilgilerle rezervasyon oluşturmayı ve kodu gösterin.
-5. Aynı araçta çakışan tarih uyarısını ve gönderme düğmesinin pasif kaldığını; ardından uygun tarih seçilebildiğini gösterin.
-6. `/my-bookings` sayfasında kaydı ve durumunu gösterin. Yenileme sonrası kaydın korunduğunu, başlangıcı gelmemiş rezervasyonun iptalini ve durum bildirimini gösterin.
-7. Geniş ve mobil ekranda sayfaları kontrol edin; temel bileşenleri ve servisleri kısaca tanıtın.
-
-TESLİM
-Videoda gerçekten denenen akışları gösterin ve varsa çalışmayan noktaları belirtin. Bu dosyayı ve videoyu proje kaynaklarıyla birlikte ZIP/RAR paketine ekleyin.
+Gerçekleştirilen görevler: Araç kiralama uygulamasının arayüzünü geliştirme; araçları listeleme ve filtreleme; kiralama ve rezervasyon akışını oluşturma; form doğrulama, rezervasyon durum yönetimi ve proje dokümantasyonunu hazırlama.
