@@ -289,12 +289,25 @@ else
             _bookingCode = booking.Id;
             _message = $"Rezervasyonun oluşturuldu. Kodun: {booking.Id}";
             await ScrollToTopAsync();
+            await TriggerConfettiAsync();
         }
         catch (InvalidOperationException ex)
         {
             _success = false;
             _message = ex.Message;
             await ScrollToTopAsync();
+        }
+    }
+
+    private async Task TriggerConfettiAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("launchCelebrationConfetti");
+        }
+        catch
+        {
+            // Ignore if JS execution fails or is prerendering
         }
     }
 
