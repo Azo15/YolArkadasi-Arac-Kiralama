@@ -30,7 +30,19 @@
             @foreach (var booking in _bookings)
             {
                 var car = _cars.FirstOrDefault(item => item.Id == booking.CarId);
-                <article class="booking-card">
+                <article id="@($"booking-card-{booking.Id}")" class="booking-card">
+                    <!-- Sadece Yazdırmada Görünen Resmi Fiş Başlığı -->
+                    <div class="voucher-print-header" aria-hidden="true">
+                        <div class="print-brand-wrap">
+                            <span class="print-brand-name">yolarkadaşı <small>ARAÇ KİRALAMA</small></span>
+                            <span class="print-doc-title">RESMİ REZERVASYON VE KİRALAMA FİŞİ</span>
+                        </div>
+                        <div class="print-meta-wrap">
+                            <span>DÜZENLENME: <b>@DateTime.Today.ToString("dd.MM.yyyy")</b></span>
+                            <span>REZERVASYON NO: <b>@booking.Id</b></span>
+                        </div>
+                    </div>
+
                     <div class="booking-image">@if(car is not null){<img src="@car.ImageUrl" alt="@car.Brand @car.Model" />}</div>
                     <div class="booking-content">
                         <div class="booking-topline"><div><span class="eyebrow">REZERVASYON KODU</span><strong class="booking-code">@booking.Id</strong></div><span class="booking-status @(booking.IsCancelled ? "status-cancelled" : booking.ReturnDate.Date < DateTime.Today ? "status-past" : "status-active")">@(booking.IsCancelled ? "İptal Edildi" : booking.ReturnDate.Date < DateTime.Today ? "Tamamlandı" : "Aktif")</span></div>
@@ -51,7 +63,7 @@
                                 <strong>@booking.TotalAmount.ToString("N0") ₺</strong>
                             </div>
                             <div class="booking-actions">
-                                <button type="button" class="btn-print-voucher" @onclick="PrintVoucherAsync" title="Rezervasyon fişini yazdır veya PDF olarak kaydet">
+                                <button type="button" class="btn-print-voucher" @onclick="() => PrintSingleVoucherAsync(booking.Id)" title="Sadece bu rezervasyonun fişini yazdır">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="6 9 6 2 18 2 18 9"/>
                                         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
@@ -118,15 +130,15 @@
         }
     }
 
-    private async Task PrintVoucherAsync()
+    private async Task PrintSingleVoucherAsync(string bookingId)
     {
         try
         {
-            await JS.InvokeVoidAsync("window.print");
+            await JS.InvokeVoidAsync("printSpecificVoucher", bookingId);
         }
         catch
         {
-            // Ignore if JS execution fails or is prerendering
+            await JS.InvokeVoidAsync("window.print");
         }
     }
 

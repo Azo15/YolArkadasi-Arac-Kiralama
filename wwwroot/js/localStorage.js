@@ -86,3 +86,28 @@ window.launchCelebrationConfetti = () => {
         console.error('Confetti error:', e);
     }
 };
+
+window.printSpecificVoucher = (bookingId) => {
+    try {
+        document.body.classList.add('printing-single-voucher');
+        document.querySelectorAll('.is-being-printed').forEach(el => el.classList.remove('is-being-printed'));
+
+        const targetCard = document.getElementById('booking-card-' + bookingId);
+        if (targetCard) {
+            targetCard.classList.add('is-being-printed');
+        }
+
+        window.print();
+
+        const cleanUp = () => {
+            document.body.classList.remove('printing-single-voucher');
+            if (targetCard) targetCard.classList.remove('is-being-printed');
+            window.removeEventListener('afterprint', cleanUp);
+        };
+
+        window.addEventListener('afterprint', cleanUp);
+        setTimeout(cleanUp, 1800);
+    } catch (e) {
+        window.print();
+    }
+};

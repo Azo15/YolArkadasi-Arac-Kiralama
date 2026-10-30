@@ -270,10 +270,19 @@
     line-height: 1.6;
 }
 
+.voucher-print-header {
+    display: none;
+}
+
 /* =========================================================
    YAZDIRMA TASARIMI (@media print)
    ========================================================= */
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 1.5cm;
+    }
+
     :global(body),
     :global(.page-container) {
         background: #ffffff !important;
@@ -284,6 +293,7 @@
     :global(.back-link),
     .button-primary,
     .booking-actions,
+    .bookings-heading,
     .bookings-heading a {
         display: none !important;
     }
@@ -294,24 +304,91 @@
         padding: 0 !important;
     }
 
-    .booking-card {
-        page-break-inside: avoid;
-        break-inside: avoid;
+    /* TEK BİR REZERVASYONU YAZDIRMA (İZOLE ETME) */
+    :global(body.printing-single-voucher) .booking-card:not(.is-being-printed) {
+        display: none !important;
+    }
+
+    :global(body.printing-single-voucher) .booking-list {
+        display: block !important;
+    }
+
+    :global(body.printing-single-voucher) .booking-card.is-being-printed {
+        display: grid !important;
+        grid-template-columns: 210px 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        border: 2.5px solid #173f36 !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        background: #ffffff !important;
         box-shadow: none !important;
-        border: 2px solid #222222 !important;
-        margin-bottom: 24px !important;
-        grid-template-columns: 200px 1fr !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    :global(body.printing-single-voucher) .is-being-printed .voucher-print-header {
+        display: flex !important;
+        grid-column: 1 / -1;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+        border-bottom: 2px solid #173f36;
+    }
+
+    .print-brand-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .print-brand-name {
+        font: 900 18px Manrope, sans-serif;
+        color: #173f36;
+        letter-spacing: -0.5px;
+    }
+
+    .print-brand-name small {
+        font-size: 10px;
+        color: #557568;
+        letter-spacing: 1px;
+    }
+
+    .print-doc-title {
+        font-size: 11px;
+        font-weight: 800;
+        color: #065f46;
+        letter-spacing: 0.8px;
+        margin-top: 2px;
+    }
+
+    .print-meta-wrap {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        font-size: 11px;
+        color: #4b5563;
+    }
+
+    .print-meta-wrap b {
+        color: #111827;
+        font-family: 'DM Mono', monospace, sans-serif;
     }
 
     .booking-code {
-        font-size: 16px !important;
+        font-size: 15px !important;
         font-weight: 900 !important;
+        color: #173f36 !important;
     }
 
     .status-active {
-        border: 1px solid #000 !important;
-        background: #f0f0f0 !important;
-        color: #000 !important;
+        border: 1.5px solid #173f36 !important;
+        background: #eef7ee !important;
+        color: #173f36 !important;
     }
 }
 
