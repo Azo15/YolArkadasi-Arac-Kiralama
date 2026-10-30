@@ -2,6 +2,7 @@
 @implements IDisposable
 @inject BookingState BookingState
 @inject CarService Cars
+@inject IJSRuntime JS
 
 <PageTitle>Rezervasyonlarım | yolarkadaşı</PageTitle>
 
@@ -44,7 +45,28 @@
                                 @booking.CustomerName
                             </span>
                         </div>
-                        <div class="booking-bottom"><div><span>TOPLAM ÜCRET</span><strong>@booking.TotalAmount.ToString("N0") ₺</strong></div>@if(!booking.IsCancelled && booking.PickupDate.Date > DateTime.Today){<button class="button-secondary" disabled="@_cancellingIds.Contains(booking.Id)" @onclick="() => CancelAsync(booking.Id)">@(_cancellingIds.Contains(booking.Id) ? "İptal ediliyor..." : "Rezervasyonu iptal et")</button>}</div>
+                        <div class="booking-bottom">
+                            <div>
+                                <span>TOPLAM ÜCRET</span>
+                                <strong>@booking.TotalAmount.ToString("N0") ₺</strong>
+                            </div>
+                            <div class="booking-actions">
+                                <button type="button" class="btn-print-voucher" @onclick="PrintVoucherAsync" title="Rezervasyon fişini yazdır veya PDF olarak kaydet">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 6 2 18 2 18 9"/>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                                        <rect x="6" y="14" width="12" height="8"/>
+                                    </svg>
+                                    <span>Fiş Yazdır</span>
+                                </button>
+                                @if(!booking.IsCancelled && booking.PickupDate.Date > DateTime.Today)
+                                {
+                                    <button class="button-secondary" disabled="@_cancellingIds.Contains(booking.Id)" @onclick="() => CancelAsync(booking.Id)">
+                                        @(_cancellingIds.Contains(booking.Id) ? "İptal ediliyor..." : "Rezervasyonu iptal et")
+                                    </button>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </article>
             }
@@ -93,6 +115,18 @@
         finally
         {
             _cancellingIds.Remove(id);
+        }
+    }
+
+    private async Task PrintVoucherAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("window.print");
+        }
+        catch
+        {
+            // Ignore if JS execution fails or is prerendering
         }
     }
 
