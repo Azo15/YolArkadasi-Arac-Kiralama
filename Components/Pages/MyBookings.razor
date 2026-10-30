@@ -7,7 +7,27 @@
 <PageTitle>Rezervasyonlarım | yolarkadaşı</PageTitle>
 
 <div class="bookings-page">
-    <div class="bookings-heading"><div><span class="eyebrow">YOLCULUKLARIN</span><h1>Rezervasyonların.</h1><p>Oluşturduğun kiralamaları buradan görüntüleyebilirsin.</p></div><a class="button-primary" href="/">Yeni araç keşfet <span>→</span></a></div>
+    <div class="bookings-heading">
+        <div>
+            <span class="eyebrow">YOLCULUKLARIN</span>
+            <h1>Rezervasyonların.</h1>
+            <p>Oluşturduğun kiralamaları buradan görüntüleyebilirsin.</p>
+        </div>
+        <div class="heading-actions">
+            @if (_bookings.Count > 0)
+            {
+                <button type="button" class="btn-print-all" @onclick="PrintAllVouchersAsync" title="Listedeki tüm rezervasyonları toplu yazdır">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9"/>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                        <rect x="6" y="14" width="12" height="8"/>
+                    </svg>
+                    <span>Tümünü Yazdır</span>
+                </button>
+            }
+            <a class="button-primary" href="/">Yeni araç keşfet <span>→</span></a>
+        </div>
+    </div>
     @if (_message is not null){<div class="alert-message @(_messageSuccess ? "success-message" : "error-message")">@_message</div>}
     @if (_loading)
     {
@@ -135,6 +155,18 @@
         try
         {
             await JS.InvokeVoidAsync("printSpecificVoucher", bookingId);
+        }
+        catch
+        {
+            await JS.InvokeVoidAsync("window.print");
+        }
+    }
+
+    private async Task PrintAllVouchersAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("printAllBookings");
         }
         catch
         {
