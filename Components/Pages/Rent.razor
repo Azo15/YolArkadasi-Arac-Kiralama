@@ -24,8 +24,61 @@ else
                 <h1>Yolculuğunu planla.</h1>
                 <p>@_car.Brand @_car.Model için tarihleri ve sana uygun ek hizmetleri seç.</p>
             </div>
-            <span class="step-chip"><b>1</b> Araç seçildi</span>
         </div>
+
+        <!-- Kiralama Aşamaları İlerleme Çubuğu (Multi-Step Stepper) -->
+        <nav class="rental-stepper" aria-label="Kiralama adımları">
+            <div class="stepper-item step-completed">
+                <div class="step-circle">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="step-text">
+                    <span class="step-number">ADIM 1</span>
+                    <strong class="step-label">Araç Seçimi</strong>
+                    <small class="step-sub">@_car.Brand @_car.Model</small>
+                </div>
+            </div>
+
+            <div class="stepper-line @(_success ? "line-completed" : "line-active")" aria-hidden="true"></div>
+
+            <div class="stepper-item @(_success ? "step-completed" : "step-active")">
+                <div class="step-circle">
+                    @if (_success)
+                    {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    }
+                    else
+                    {
+                        <span>2</span>
+                    }
+                </div>
+                <div class="step-text">
+                    <span class="step-number">ADIM 2</span>
+                    <strong class="step-label">Tarih & Hizmet</strong>
+                    <small class="step-sub">@(_success ? "Tamamlandı" : "Seçim yapılıyor")</small>
+                </div>
+            </div>
+
+            <div class="stepper-line @(_success ? "line-completed" : "")" aria-hidden="true"></div>
+
+            <div class="stepper-item @(_success ? "step-completed step-highlight" : "step-pending")">
+                <div class="step-circle">
+                    @if (_success)
+                    {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    }
+                    else
+                    {
+                        <span>3</span>
+                    }
+                </div>
+                <div class="step-text">
+                    <span class="step-number">ADIM 3</span>
+                    <strong class="step-label">Onay & Kod</strong>
+                    <small class="step-sub">@(_success ? _bookingCode : "Son adım")</small>
+                </div>
+            </div>
+        </nav>
 
         <!-- Üst Belirgin Bildirim Alanı (Sayfa Başı) -->
         <div id="booking-alert-top">
