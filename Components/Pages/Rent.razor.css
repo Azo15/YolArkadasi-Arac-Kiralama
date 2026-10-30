@@ -477,6 +477,79 @@
 }
 
 /* =========================================================
+   SON ADIM (MÜŞTERİ PANELİ) ÇAKIŞMA VE AÇIKLAMA UYARISI
+   ========================================================= */
+.customer-step-conflict-card {
+    display: flex;
+    gap: 16px;
+    padding: 18px 22px;
+    margin-bottom: 22px;
+    background: linear-gradient(135deg, #fff8f7 0%, #feece9 100%);
+    border: 1.5px solid #f87171;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.08);
+    animation: fadeInSlide 0.3s ease;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.step-conflict-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 18px;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+}
+
+.step-conflict-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.step-conflict-details h4 {
+    margin: 0 0 6px;
+    color: #991b1b;
+    font: 800 15px Manrope, sans-serif;
+    letter-spacing: -0.2px;
+}
+
+.step-conflict-details p {
+    margin: 0 0 10px;
+    color: #7f1d1d;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.step-conflict-solution {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    color: #991b1b;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.step-conflict-solution svg {
+    color: #dc2626;
+    flex-shrink: 0;
+}
+
+/* =========================================================
    FORM ALANINDA YERİNDE TEBRİK VE KOD KARTI (IN-PLACE CARD)
    ========================================================= */
 .in-place-success-card {

@@ -26,14 +26,22 @@
                 <span>Ücretsiz iptal hakkı, kredi kartsız ön onay</span>
             </div>
         </div>
-        <button class="button-primary submit-button" type="submit" disabled="@IsDisabled">
-            Rezervasyonu Tamamla <span class="arrow-icon">→</span>
+        <button class="button-primary submit-button @(HasConflict ? "button-conflict-disabled" : "")" type="submit" disabled="@IsDisabled">
+            @if (HasConflict)
+            {
+                <span>Tarih Çakışması Nedeniyle Tamamlanamaz</span>
+            }
+            else
+            {
+                <span>Rezervasyonu Tamamla</span> <span class="arrow-icon">→</span>
+            }
         </button>
     </div>
 </EditForm>
 
 @code {
     [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool HasConflict { get; set; }
     [Parameter] public EventCallback<CustomerInput> OnValidCustomerSubmit { get; set; }
 
     private CustomerInput _customer = new();

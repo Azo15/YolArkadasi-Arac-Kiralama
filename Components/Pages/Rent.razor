@@ -89,13 +89,16 @@ else
                     <span>Bu araç şu anda kiralanabilir durumda değil. Başka bir araç seçebilirsin.</span>
                 </div>
             }
-            @if (_hasDateConflict)
+            @if (_showConflictAlert && _hasDateConflict)
             {
                 <div class="alert-box alert-conflict conflict-alert" role="alert">
                     <div class="alert-conflict-icon">!</div>
                     <div class="alert-conflict-text">
-                        <strong>Bu araç seçtiğiniz tarihlerde rezerve edilmiştir!</strong>
-                        <p>Lütfen farklı teslim ve iade tarihleri seçin veya başka bir aracı inceleyin.</p>
+                        <strong>Rezervasyon Adımı Tamamlanamadı: Tarih Çakışması</strong>
+                        <p>
+                            <b>@_car.Brand @_car.Model</b> aracı, seçtiğiniz <b>@_pickupDate.ToString("dd MMMM yyyy") – @_returnDate.ToString("dd MMMM yyyy")</b> tarihlerinde zaten doludur.
+                            Lütfen teslim alma veya iade tarihlerini güncelleyerek adımları tekrar deneyin.
+                        </p>
                     </div>
                 </div>
             }
@@ -152,6 +155,25 @@ else
                         <span class="extras-hint">* Zorunlu alanlar</span>
                     </div>
 
+                    @if (_hasDateConflict)
+                    {
+                        <div class="customer-step-conflict-card" role="alert">
+                            <div class="step-conflict-badge">!</div>
+                            <div class="step-conflict-details">
+                                <h4>Adım Tamamlanamıyor: Araç Seçilen Tarihlerde Dolu</h4>
+                                <p>
+                                    <b>@_car.Brand @_car.Model</b> aracı, seçtiğiniz 
+                                    <b>@_pickupDate.ToString("dd MMMM yyyy") – @_returnDate.ToString("dd MMMM yyyy")</b> 
+                                    tarihleri arasında başka bir rezervasyonla kiralanmıştır. Bu sebeple sonraki adıma geçilemiyor ve rezervasyon onaylanamıyor.
+                                </p>
+                                <div class="step-conflict-solution">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                    <span>Lütfen yukarıdaki tarih paneline dönüp teslim alma veya iade tarihlerini değiştirin ya da müsait başka bir aracı inceleyin.</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                     @if (_success && !string.IsNullOrWhiteSpace(_bookingCode))
                     {
                         <div class="in-place-success-card" role="alert">
@@ -175,7 +197,7 @@ else
                     }
                     else
                     {
-                        <CustomerForm IsDisabled="@(!_car.IsAvailable || _hasDateConflict || !HasValidDates)" OnValidCustomerSubmit="CreateBookingAsync" />
+                        <CustomerForm IsDisabled="@(!_car.IsAvailable || _hasDateConflict || !HasValidDates)" HasConflict="@_hasDateConflict" OnValidCustomerSubmit="CreateBookingAsync" />
                     }
                 </section>
             </div>
@@ -195,6 +217,7 @@ else
     private string? _bookingCode;
     private bool _success;
     private bool _hasDateConflict;
+    private bool _showConflictAlert;
     private string? _initializedCarId;
     private bool HasValidDates => _pickupDate.Date >= DateTime.Today && _returnDate.Date > _pickupDate.Date;
 
@@ -231,6 +254,7 @@ else
     {
         _message = null;
         _bookingCode = null;
+        _showConflictAlert = false;
         RefreshDateConflict();
     }
 
@@ -245,6 +269,9 @@ else
         RefreshDateConflict();
         if (_hasDateConflict)
         {
+            _showConflictAlert = true;
+            _message = $"{_car.Brand} {_car.Model} seçtiğiniz {_pickupDate:dd MMMM yyyy} – {_returnDate:dd MMMM yyyy} tarihlerinde başka bir rezervasyona sahiptir. Lütfen tarihleri değiştirin.";
+            _success = false;
             await ScrollToTopAsync();
             return;
         }
