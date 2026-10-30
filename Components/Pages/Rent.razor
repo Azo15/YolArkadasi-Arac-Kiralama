@@ -96,7 +96,7 @@ else
                     <div class="alert-conflict-text">
                         <strong>Rezervasyon Adımı Tamamlanamadı: Tarih Çakışması</strong>
                         <p>
-                            <b>@_car.Brand @_car.Model</b> aracı, seçtiğiniz <b>@_pickupDate.ToString("dd MMMM yyyy") – @_returnDate.ToString("dd MMMM yyyy")</b> tarihlerinde zaten doludur.
+                            <b>@_car.Brand @_car.Model</b> aracı, seçtiğiniz <b>@_pickupDate.ToString("dd MMMM yyyy", TrCulture) – @_returnDate.ToString("dd MMMM yyyy", TrCulture)</b> tarihlerinde zaten doludur.
                             Lütfen teslim alma veya iade tarihlerini güncelleyerek adımları tekrar deneyin.
                         </p>
                     </div>
@@ -163,12 +163,33 @@ else
                                 <h4>Adım Tamamlanamıyor: Araç Seçilen Tarihlerde Dolu</h4>
                                 <p>
                                     <b>@_car.Brand @_car.Model</b> aracı, seçtiğiniz 
-                                    <b>@_pickupDate.ToString("dd MMMM yyyy") – @_returnDate.ToString("dd MMMM yyyy")</b> 
+                                    <b>@_pickupDate.ToString("dd MMMM yyyy", TrCulture) – @_returnDate.ToString("dd MMMM yyyy", TrCulture)</b> 
                                     tarihleri arasında başka bir rezervasyonla kiralanmıştır. Bu sebeple sonraki adıma geçilemiyor ve rezervasyon onaylanamıyor.
                                 </p>
+
+                                <!-- MÜŞTERİ KAÇMASIN DİYE: EN YAKIN MÜSAİT TARİH ÖNERİLERİ -->
+                                <div class="suggested-dates-container">
+                                    <div class="suggested-dates-header">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                        <span><b>@_car.Brand @_car.Model</b> İçin En Erken Müsait Tarihler (Tek Tıkla Uygula):</span>
+                                    </div>
+                                    <div class="suggested-chips-list">
+                                        @foreach (var suggestion in GetAvailableDateSuggestions())
+                                        {
+                                            <button type="button" class="btn-suggested-date" @onclick="() => ApplySuggestedDates(suggestion.Pickup, suggestion.Return)" title="Bu tarihleri seç ve rezervasyona devam et">
+                                                <div class="date-chip-info">
+                                                    <strong class="date-chip-range">@suggestion.Pickup.ToString("dd MMM", TrCulture) – @suggestion.Return.ToString("dd MMM yyyy", TrCulture)</strong>
+                                                    <span class="date-chip-badge">@suggestion.Days Gün Müsait</span>
+                                                </div>
+                                                <span class="date-chip-action">Tarihi Seç ✓</span>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
                                 <div class="step-conflict-solution">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                                    <span>Lütfen yukarıdaki tarih paneline dönüp teslim alma veya iade tarihlerini değiştirin ya da müsait başka bir aracı inceleyin.</span>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                    <span>Tarih aramakla uğraşmayın: Yukarıdaki müsait tarih seçeneklerinden birine tıklayarak anında kiralama formunu doldurabilirsiniz.</span>
                                 </div>
                             </div>
                         </div>
@@ -261,6 +282,56 @@ else
     private void RefreshDateConflict()
     {
         _hasDateConflict = _car is not null && HasValidDates && BookingState.HasConflict(_car.Id, _pickupDate, _returnDate);
+    }
+
+    private static readonly CultureInfo TrCulture = new("tr-TR");
+
+    private record DateSuggestion(DateTime Pickup, DateTime Return, int Days);
+
+    private List<DateSuggestion> GetAvailableDateSuggestions()
+    {
+        if (_car is null) return [];
+        var suggestions = new List<DateSuggestion>();
+        var duration = Math.Max(1, (_returnDate.Date - _pickupDate.Date).Days);
+
+        var cursor = DateTime.Today.AddDays(1);
+        if (_returnDate.Date > cursor) cursor = _returnDate.Date;
+
+        for (var offset = 0; offset < 90 && suggestions.Count < 3; offset++)
+        {
+            var candidatePickup = cursor.AddDays(offset);
+            var candidateReturn = candidatePickup.AddDays(duration);
+            if (!BookingState.HasConflict(_car.Id, candidatePickup, candidateReturn))
+            {
+                suggestions.Add(new DateSuggestion(candidatePickup, candidateReturn, duration));
+                offset += duration;
+            }
+        }
+
+        if (suggestions.Count < 2)
+        {
+            var fallbackCursor = DateTime.Today.AddDays(1);
+            for (var d = 0; d < 30 && suggestions.Count < 3; d++)
+            {
+                var p = fallbackCursor.AddDays(d);
+                var r = p.AddDays(duration);
+                if (!BookingState.HasConflict(_car.Id, p, r) && !suggestions.Any(s => s.Pickup == p))
+                {
+                    suggestions.Add(new DateSuggestion(p, r, duration));
+                    d += duration;
+                }
+            }
+        }
+
+        return suggestions.OrderBy(s => s.Pickup).Take(3).ToList();
+    }
+
+    private void ApplySuggestedDates(DateTime pickup, DateTime dropoff)
+    {
+        _pickupDate = pickup;
+        _returnDate = dropoff;
+        RentalState.SetDates(pickup, dropoff);
+        OnSelectionChanged();
     }
 
     private async Task CreateBookingAsync(CustomerInput customer)
