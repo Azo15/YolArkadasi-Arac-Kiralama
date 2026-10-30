@@ -24,6 +24,41 @@
     font-size: 13px;
 }
 
+.heading-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-print-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1.5px solid #285447;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #173f36;
+    font: 750 13px Manrope, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 6px rgba(23, 63, 54, 0.06);
+    white-space: nowrap;
+}
+
+.btn-print-all:hover {
+    background: #173f36;
+    color: #d1f26a;
+    border-color: #173f36;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(23, 63, 54, 0.2);
+}
+
+.btn-print-all svg {
+    flex-shrink: 0;
+}
+
 .booking-list {
     display: grid;
     gap: 18px;
