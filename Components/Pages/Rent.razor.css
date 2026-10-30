@@ -25,7 +25,7 @@
     align-items: flex-end;
     justify-content: space-between;
     gap: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .rental-heading h1 {
@@ -39,6 +39,123 @@
     margin: 0;
     color: #78847d;
     font-size: 13px;
+}
+
+/* =========================================================
+   KİRALAMA AŞAMALARI İLERLEME ÇUBUĞU (STEPPER)
+   ========================================================= */
+.rental-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 24px;
+    margin-bottom: 26px;
+    background: #ffffff;
+    border: 1px solid #e1e7e1;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(24, 52, 42, 0.04);
+}
+
+.stepper-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.step-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-number {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    color: #8b9990;
+}
+
+.step-label {
+    font: 750 14px Manrope, sans-serif;
+    color: #20372d;
+    line-height: 1.25;
+}
+
+.step-sub {
+    font-size: 11px;
+    color: #7b8880;
+    margin-top: 1px;
+}
+
+/* Stepper States */
+.step-completed .step-circle {
+    background: #173f36;
+    color: #d1f26a;
+    box-shadow: 0 3px 10px rgba(23, 63, 54, 0.25);
+}
+
+.step-active .step-circle {
+    background: #d1f26a;
+    color: #173f36;
+    border: 2px solid #173f36;
+    box-shadow: 0 0 0 4px rgba(209, 242, 106, 0.35);
+    animation: pulseActive 2s infinite;
+}
+
+@keyframes pulseActive {
+    0% { box-shadow: 0 0 0 0 rgba(209, 242, 106, 0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(209, 242, 106, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(209, 242, 106, 0); }
+}
+
+.step-pending .step-circle {
+    background: #edf1ed;
+    color: #8fa095;
+    border: 1px solid #d8e0d8;
+}
+
+.step-pending .step-label {
+    color: #8fa095;
+}
+
+.step-highlight .step-circle {
+    background: #10b981;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+/* Connecting Line */
+.stepper-line {
+    flex: 1;
+    height: 3px;
+    min-width: 20px;
+    background: #e2e8e2;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+}
+
+.stepper-line.line-completed {
+    background: #173f36;
+}
+
+.stepper-line.line-active {
+    background: linear-gradient(90deg, #173f36 0%, #d1f26a 100%);
 }
 
 .step-chip {
@@ -506,6 +623,24 @@
     }
     .rental-summary {
         order: -1;
+    }
+    .rental-stepper {
+        padding: 12px 16px;
+        gap: 8px;
+    }
+    .stepper-item {
+        gap: 8px;
+    }
+    .step-sub {
+        display: none;
+    }
+    .step-circle {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+    .step-label {
+        font-size: 12px;
     }
     .alert-success-prominent {
         flex-direction: column;
