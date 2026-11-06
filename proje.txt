@@ -6,5 +6,5 @@ PROJE ÜYESİ VE GÖREV DAĞILIMI
 Bu proje bireysel olarak hazırlanmıştır. Projenin geliştirilmesi ve aşağıdaki görevlerin tamamı tek proje üyesi tarafından gerçekleştirilmiştir.
 
 Öğrenci numarası: 5230505081
-Ad soyad: Azo SMAİL
+Ad soyad: Azo İSMAİL
 Gerçekleştirilen görevler: Araç kiralama uygulamasının arayüzünü geliştirme; araçları listeleme ve filtreleme; kiralama ve rezervasyon akışını oluşturma; form doğrulama, rezervasyon durum yönetimi ve proje dokümantasyonunu hazırlama.
