@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>YolArkadaşı - 5-6 Dakikalık Video Sunum Kılavuzu (Azo İsmail)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.38;
+      color: #0f172a;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2.5px solid #059669;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .header-left h1 {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #064e3b;
+      letter-spacing: -0.3px;
+      margin-bottom: 3px;
+    }
+    .header-left .subtitle {
+      font-size: 9pt;
+      color: #047857;
+      font-weight: 600;
+    }
+    .header-right {
+      text-align: right;
+      font-size: 8.5pt;
+      color: #475569;
+    }
+    .badge-student {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+
+    /* Pre-flight checklist */
+    .checklist-bar {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      font-size: 8pt;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .checklist-bar strong {
+      color: #0f172a;
+    }
+
+    /* Timeline Section Item */
+    .step-card {
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #10b981;
+      border-radius: 6px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+      page-break-inside: avoid;
+      background: #ffffff;
+    }
+    .step-card.accent {
+      border-left-color: #059669;
+      background: #fafdfb;
+    }
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 3px;
+    }
+    .step-title-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .time-badge {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.3px;
+    }
+    .step-name {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #064e3b;
+    }
+    .kriter-tag {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #047857;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 1.5px 6px;
+      border-radius: 3px;
+    }
+
+    /* Action (What to do on screen) */
+    .action-row {
+      background: #f1f5f9;
+      border-radius: 4px;
+      padding: 4px 7px;
+      font-size: 8pt;
+      color: #1e293b;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+    .action-label {
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 7.5pt;
+    }
+
+    /* Speech (What to say) */
+    .speech-box {
+      font-size: 8.8pt;
+      line-height: 1.35;
+      color: #1e293b;
+      padding-left: 8px;
+      border-left: 2.5px solid #10b981;
+      font-style: normal;
+    }
+    .speech-label {
+      font-weight: 700;
+      color: #065f46;
+      font-size: 8pt;
+      display: block;
+      margin-bottom: 1px;
+    }
+    .speech-text {
+      color: #0f172a;
+      font-weight: 500;
+    }
+    .speech-text strong {
+      color: #047857;
+      font-weight: 700;
+    }
+
+    /* Page break helper */
+    .page-break {
+      page-break-after: always;
+    }
+
+    /* Footer for print */
+    .footer-note {
+      text-align: center;
+      font-size: 7.5pt;
+      color: #64748b;
+      margin-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>YolArkadaşı - Video Sunum ve Çalıştırma Kılavuzu</h1>
+      <div class="subtitle">İleri Web Programlama Dersi | 5-6 Dakikalık Tam Konuşma Senaryosu</div>
+    </div>
+    <div class="header-right">
+      <div class="badge-student">Öğrenci: AZO İSMAİL - No: 5230505081</div>
+      <div>Hedef Not: <strong>100 / 100 Puan</strong> | Süre: <strong>5 - 6 Dk</strong></div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST BAR -->
+  <div class="checklist-bar">
+    <div><strong>Kayıt Öncesi Hazırlık:</strong> 1. Projeyi başlat: <code>dotnet run</code> &nbsp;|&nbsp; 2. Tarayıcıda <code>http://localhost:5216/cars</code> sekmesini hazır tut &nbsp;|&nbsp; 3. Ekran kaydını aç (Win + Alt + R)</div>
+  </div>
+
+  <!-- GİRİŞ -->
+  <div class="step-card accent">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">00:00 - 00:30</span>
+        <span class="step-name">GİRİŞ VE KENDİNİ TANITMA</span>
+      </div>
+      <span class="kriter-tag">Genel Tanıtım (Bireysel Proje)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>Tarayıcıda ana sayfa açık olsun. Farenle logonun ve sol menünün üzerinde kısaca gezin.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"Merhaba sayın hocam, ben <strong>Azo İsmail</strong>. Öğrenci numaram <strong>5230505081</strong>. İleri Web Programlama dersi kapsamında <strong>bireysel olarak</strong> geliştirdiğim <strong>YolArkadaşı Araç Kiralama ve Rezervasyon</strong> sisteminin çalıştırma ve anlatım sunumunu yapıyorum. Blazor Interactive Server mimarisiyle geliştirdiğim uygulamamızda kılavuzdaki tüm değerlendirme kriterlerini şimdi canlı olarak adım adım çalıştırarak göstereceğim."</span>
+    </div>
+  </div>
+
+  <!-- BÖLÜM 1 -->
+  <div class="step-card">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">00:30 - 01:15</span>
+        <span class="step-name">1. BÖLÜM: JSON VERİLERİ VE ARAÇ FİLOSU</span>
+      </div>
+      <span class="kriter-tag">Kriter 1 (10P) & Kriter 6 (20P)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>Üstteki vitrin slaytbar'ını (slider) göster. Aşağı kaydırıp araç kartlarının üzerine gel (3D eğilme ve yeşil nabız ışığını göster).</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"1. Kriter gereğince sistemimizde en az 12 araç şartı bulunuyordu. Projemizde tam <strong>15 adet araç</strong> ve <strong>4 farklı kategori</strong> (Ekonomik, SUV, Lüks ve Orta Sınıf) yer almaktadır. Verilerimiz <code>cars.json</code> dosyasından <code>HttpClient</code> ve <code>CarService</code> mimarisiyle asenkron olarak yüklenmektedir. Sayfa açılışında vitrin slaytbar'ı yer almakta; Scoped CSS ile kodladığımız araç kartlarında 3D derinlik ve aracın müsait olduğunu belirten canlı yeşil nabız efekti bulunmaktadır."</span>
+    </div>
+  </div>
+
+  <!-- BÖLÜM 2 -->
+  <div class="step-card">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">01:15 - 02:00</span>
+        <span class="step-name">2. BÖLÜM: ARAMA, KATEGORİ VE FİYAT SLIDER FİLTRELEME</span>
+      </div>
+      <span class="kriter-tag">Kriter 3 (15P - Filtreleme)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>1) Arama kutusuna <code>Porsche</code> yazıp hemen sil. 2) Kategori çiplerinden <code>SUV & Aile</code>ye tıkla. 3) Fiyat Slider'ını 2.000 TL'ye çek.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"3. Kriterdeki filtreleme işlevlerini test ediyoruz. Arama çubuğuna araç ismi girdiğimiz anda liste anlık Linq filtrelemesiyle süzülüyor. Kategori butonları ile araç tiplerine göre anında ayrıştırma yapabiliyoruz. Ayrıca projeye eklediğimiz interaktif <strong>Fiyat Aralığı Slider'ı</strong> sayesinde kullanıcı bütçesine göre araçları canlı olarak filtreleyebilmektedir."</span>
+    </div>
+  </div>
+
+  <!-- BÖLÜM 3 -->
+  <div class="step-card">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">02:00 - 02:55</span>
+        <span class="step-name">3. BÖLÜM: RAZOR BİLEŞENLERİ VE DİNAMİK FİYAT HESAPLAMA</span>
+      </div>
+      <span class="kriter-tag">Kriter 2 (15P) & Kriter 3 (15P)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>Bir aracın <strong>'Hemen Kirala'</strong> butonuna bas. Stepper'ı göster. Tarihi 3 güne ayarla. Kasko, Çocuk Koltuğu ve Ek Sürücü kutularını işaretle.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"2. ve 3. Kriterdeki bileşen yapısı ve dinamik hesaplama: Kiralama sayfası <code>RentalOptions</code>, <code>RentalSummary</code> ve <code>CustomerForm</code> bağımsız Razor bileşenlerine ayrılmıştır. Veri akışı <code>[Parameter]</code> ve <code>EventCallback</code> ile iki yönlü sağlanır. Teslim ve iade tarihlerini seçtiğimizde gün sayısı anında hesaplanır. Tam kapsamlı kasko (250 TL), çocuk koltuğu (75 TL) ve ek sürücü (150 TL) seçenekleri değiştikçe sağdaki özet panelinde toplam tutar anlık olarak gecikmesiz hesaplanmaktadır."</span>
+    </div>
+  </div>
+
+  <!-- SAYFA SONU ÇİZGİSİ / AYIRICI -->
+  <div style="page-break-after: always;"></div>
+
+  <!-- BÖLÜM 4 -->
+  <div class="step-card accent">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">02:55 - 03:45</span>
+        <span class="step-name">4. BÖLÜM: TARİH ÇAKIŞMA KONTROLÜ VE AKILLI GÜN ÖNERİSİ</span>
+      </div>
+      <span class="kriter-tag">Kriter 3 (15P - Çakışma Yönetimi)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>İleri diyerek <strong>'İletişim Bilgileri'</strong> adımına geç. Çakışma varsa çıkan kırmızı uyarı kutusunu göster. Altındaki yeşil <strong>'Müsait Tarih Önerisi'</strong> çipine tıkla.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"3. Kriterdeki araç uygunluğu ve çakışma kontrolünü test ediyoruz. Sistem, seçilen aracın daha önceki bir rezervasyonla çakışıp çakışmadığını <code>BookingState</code> üzerinden denetler. Önceden dolu olan bir tarih seçildiğinde son adıma geçiş engellenir ve ekranda kırmızı uyarı paneli gösterilir. Müşteri kaybını önlemek için geliştirdiğimiz akıllı öneri sistemi, boş olan en yakın müsait tarihleri buton olarak sunar. Tek tıkla tarih güncellenir ve çakışma anında çözülür."</span>
+    </div>
+  </div>
+
+  <!-- BÖLÜM 5 -->
+  <div class="step-card">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">03:45 - 04:30</span>
+        <span class="step-name">5. BÖLÜM: FORM DOĞRULAMA VE KONFETİ KUTLAMASI</span>
+      </div>
+      <span class="kriter-tag">Kriter 4 (15P) & Kriter 6 (20P)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>Formu boş bırakıp 'Rezervasyonu Onayla'ya bas (kırmızı hata mesajları çıksın). Sonra Adını (Azo İsmail), e-posta ve telefonunu yazıp onayla. Konfetiyi göster!</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"4. Kriterdeki form doğrulama yapısını gösteriyorum. Müşteri formu <code>EditForm</code>, <code>DataAnnotationsValidator</code> ve <code>ValidationMessage</code> ile inşa edilmiştir. <code>[Required]</code>, <code>[EmailAddress]</code> ve <code>[Phone]</code> kuralları gereği eksik ya da geçersiz girişte işlem engellenir. Bilgilerimizi doğru girdiğimizde ise benzersiz rezervasyon kodumuz üretilir ve ekranda 60 FPS HTML5 Canvas konfeti kutlaması tetiklenir."</span>
+    </div>
+  </div>
+
+  <!-- BÖLÜM 6 -->
+  <div class="step-card">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">04:30 - 05:20</span>
+        <span class="step-name">6. BÖLÜM: LOCALSTORAGE KALICILIĞI, TEKİL FİŞ YAZDIRMA VE İPTAL</span>
+      </div>
+      <span class="kriter-tag">Kriter 5 (10P) & Kriter 7 (15P)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>1) Sol menüden <strong>'Rezervasyonlar'</strong>a git. 2) Klavyeden <strong>F5</strong> yap (veriler silinmez). 3) <strong>'Fiş Yazdır'</strong> butonuna bas (Tek sayfa A4 olduğunu göster). 4) <strong>'İptal Et'</strong> butonuna bas.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"5. ve 7. Kriter: Durum yönetimi ve LocalStorage. Rezervasyonlar tarayıcı hafızasında saklanır; sayfayı F5 ile yenilesek bile kayıtlar silinmez. Rezervasyon kartındaki <strong>'Fiş Yazdır'</strong> butonu, geliştirdiğimiz izole yazdırma motoruyla diğer hiçbir kartı karıştırmadan sadece o rezervasyonu resmi A4 fişi olarak tek sayfa halinde baskıya hazırlar. En üstteki 'Tümünü Yazdır' ile toplu döküm de alınabilir. 'Rezervasyonu İptal Et' dediğimizde ise statü anında kırmızı iptal durumuna geçer."</span>
+    </div>
+  </div>
+
+  <!-- KAPANIŞ -->
+  <div class="step-card accent">
+    <div class="step-top">
+      <div class="step-title-group">
+        <span class="time-badge">05:20 - 05:50</span>
+        <span class="step-name">KAPANIŞ, PROJE DOSYALARI VE TESLİM FORMATI</span>
+      </div>
+      <span class="kriter-tag">Kriter 7 (15P - Teslimat)</span>
+    </div>
+    <div class="action-row">
+      <span class="action-label">🖥️ Ekranda Yap:</span>
+      <span>VS Code veya klasörde <strong>proje.txt</strong> dosyasını ve <strong>YolArkadasi-5230505081-AzoIsmail.zip</strong> paketini 10 saniye göster.</span>
+    </div>
+    <div class="speech-box">
+      <span class="speech-label">🗣️ DOĞRUDAN OKUNACAK METİN:</span>
+      <span class="speech-text">"Son olarak teslimat dosyalarımız: Kılavuzdaki gereksinim doğrultusunda öğrenci numaramı, adımı ve tüm görev listesini içeren <code>proje.txt</code> dosyamız eksiksiz doldurulmuştur. Tüm kaynak kodlar <code>YolArkadasi-5230505081-AzoIsmail.zip</code> adıyla temiz bir biçimde sıkıştırılmıştır. 7 değerlendirme kriterinin tamamı eksiksiz çalışmaktadır. Dinlediğiniz ve vaktiniz için çok teşekkür ederim sayın hocam."</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    YolArkadaşı Araç Kiralama & Rezervasyon Sistemi | Öğrenci: Azo İsmail (5230505081) | 100/100 Puanlık Tam Sunum Rehberi
+  </div>
+
+</body>
+</html>
