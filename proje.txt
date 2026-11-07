@@ -1,10 +1,30 @@
-ARAÇ KİRALAMA VE REZERVASYON UYGULAMASI
-Proje adı: YolArkadaşı
+ARAÇ KİRALAMA VE REZERVASYON UYGULAMASI (YolArkadaşı)
+İleri Web Programlama - Proje Teslim Dokümantasyonu
 
-PROJE ÜYESİ VE GÖREV DAĞILIMI
+==================================================
+ÖĞRENCİ VE PROJE BİLGİLERİ
+==================================================
+Öğrenci No: 5230505081
+Ad Soyad: AZO İSMAİL
+Proje Türü: Bireysel Proje (Tüm geliştirme tek üye tarafından bireysel olarak gerçekleştirilmiştir.)
 
-Bu proje bireysel olarak hazırlanmıştır. Projenin geliştirilmesi ve aşağıdaki görevlerin tamamı tek proje üyesi tarafından gerçekleştirilmiştir.
+==================================================
+GERÇEKLEŞTİRİLEN GÖREVLER
+==================================================
+- JSON Veri Yapısı Hazırlandı:
+  15 araç ve 4 araç kategorisini içeren cars.json dosyası ve asenkron CarService mimarisi oluşturuldu.
 
-Öğrenci numarası: 5230505081
-Ad soyad: Azo İSMAİL
-Gerçekleştirilen görevler: Araç kiralama uygulamasının arayüzünü geliştirme; araçları listeleme ve filtreleme; kiralama ve rezervasyon akışını oluşturma; form doğrulama, rezervasyon durum yönetimi ve proje dokümantasyonunu hazırlama.
+- Araç Listeleme ve Filtreleme Sayfası Geliştirildi (/cars):
+  Araç kartları, anlık marka/model arama, kategori, yakıt, vites filtreleri ve canlı fiyat aralığı kaydırıcısı (Range Slider) yapıldı.
+
+- Rezervasyon ve Detay Ekranı Geliştirildi (/cars/{id}/rent):
+  Çok adımlı süreç çubuğu (Stepper), geçerli tarih seçimi, ek hizmetler (sigorta, çocuk koltuğu, ek sürücü), anlık tutar hesaplama, çakışma kontrolü ve akıllı müsait tarih öneri sistemi geliştirildi.
+
+- Form Doğrulamaları Yapıldı:
+  EditForm, DataAnnotationsValidator, ValidationMessage ile [Required], [EmailAddress], [Phone] ve karakter uzunluk kontrolleri uygulandı.
+
+- Durum Yönetimi ve LocalStorage Entegrasyonu Eklendi (/my-bookings):
+  Seçimler ve rezervasyon kayıtları Scoped servisler ile yönetildi, LocalStorage üzerinde kalıcı hale getirildi. Henüz başlamamış rezervasyonları iptal etme ve tekil A4 rezervasyon fişi yazdırma özellikleri eklendi.
+
+==================================================
+NOT: Bu proje bireysel olarak hazırlanmış olup, yukarıda sıralanan görevlerin ve kodlamaların tamamı bağımsız olarak AZO İSMAİL tarafından gerçekleştirilmiştir.
