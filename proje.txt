@@ -25,3 +25,6 @@ GERÇEKLEŞTİRİLEN GÖREVLER
 
 - Durum Yönetimi ve LocalStorage Entegrasyonu Eklendi (/my-bookings):
   Seçimler ve rezervasyon kayıtları Scoped servisler ile yönetildi, LocalStorage üzerinde kalıcı hale getirildi. Henüz başlamamış rezervasyonları iptal etme ve tekil A4 rezervasyon fişi yazdırma özellikleri eklendi.
+
+==================================================
+NOT: Bu proje bireysel olarak hazırlanmış olup, yukarıda sıralanan görevlerin ve kodlamaların tamamı bağımsız olarak AZO İSMAİL tarafından gerçekleştirilmiştir.
