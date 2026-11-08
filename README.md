@@ -146,6 +146,3 @@ Projeyi yerel ortamınızda çalıştırmak için:
 
 ---
 
-## 📄 Lisans
-
-Bu proje [MIT Lisansı](LICENSE) kapsamında açık kaynak olarak paylaşılmaktadır.
