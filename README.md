@@ -36,7 +36,7 @@
 - **Gerçek Zamanlı Tutar Hesaplama:** Kiralama gün sayısı ve seçilen ek hizmetlerin (Tam Güvence Kaskosu, Çocuk Koltuğu, Ek Sürücü) anlık toplam tutara yansıması.
 - **Tarih Geçerlilik Denetimleri:** Geçmiş tarih seçimi engelleme ve iade tarihinin teslimden sonra olma kuralı.
 
-### 3. 🧠 Çakışma Yönetimi ve Akıllı Müsait Tarih Önerileri
+### 3. 🧠  Çakışma Yönetimi ve Akıllı Müsait Tarih Önerileri
 - **Çakışma Tespiti (Conflict Detection):** Seçilen tarihlerde araç başka bir müşteri tarafından rezerve edilmişse, müşteriyi boğmadan sonraki aşamada net gerekçeli bildirim sunar.
 - **Müşteri Kaçırmayan Alternatif Öneriler:** Çakışma durumunda algoritma o aracın en yakın 3 boş tarih aralığını hesaplar. Müşteri tek tıkla (`Tarihi Seç ✓`) bu aralığı uygulayabilir ve takvimle uğraşmadan kiralamasını tamamlayabilir.
 
@@ -145,4 +145,3 @@ Projeyi yerel ortamınızda çalıştırmak için:
 - **E-Posta:** ismailazo260@gmail.com
 
 ---
-
