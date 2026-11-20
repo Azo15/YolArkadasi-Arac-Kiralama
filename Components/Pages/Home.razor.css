@@ -1,4 +1,49 @@
 /* =========================================================
+   0. TAM EKRAN SCROLL SAHNELERİ (FULL-VIEWPORT SCENES)
+   ========================================================= */
+.full-viewport-scene {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 18px;
+}
+
+.fleet-scene-wrap {
+    min-height: 100vh;
+    padding-top: 12px;
+}
+
+.scene-scroll-cue {
+    align-self: center;
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid #d5e4d6;
+    color: #173f36;
+    font: 750 12px 'DM Sans', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(23, 63, 54, 0.08);
+    animation: cueFloat 2.2s ease-in-out infinite;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.scene-scroll-cue:hover {
+    background: #173f36;
+    color: #d1f26a;
+    border-color: #173f36;
+}
+
+@keyframes cueFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+}
+
+/* =========================================================
    1. EN ÜST: PREMİUM ARAÇ VİTRİN SLİDER'I (SLAYDBAR)
    ========================================================= */
 .top-showcase-slider {
@@ -960,6 +1005,10 @@
    3. RESPONSİVE DÜZENLEMELER
    ========================================================= */
 @media (max-width: 1120px) {
+    .full-viewport-scene {
+        min-height: auto;
+        justify-content: flex-start;
+    }
     .story-split-layout {
         grid-template-columns: 1fr;
     }
