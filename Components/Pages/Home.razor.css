@@ -123,6 +123,36 @@
     line-height: 1.14;
 }
 
+.slide-anim-title {
+    animation: slideTitleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.slide-anim-cta {
+    animation: slideCtaIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+
+@keyframes slideTitleIn {
+    0% {
+        opacity: 0;
+        transform: translate3d(28px, 0, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideCtaIn {
+    0% {
+        opacity: 0;
+        transform: translate3d(20px, 10px, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .showcase-title-area h2 span {
     color: #226252;
     background: linear-gradient(120deg, #184c40 0%, #3e8874 100%);
@@ -894,16 +924,16 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    transform: scale(1.06) translate3d(0, 12px, 0);
+    transform: perspective(900px) translate3d(44px, 0, 0) rotateY(-8deg) scale(1.04);
     transition:
-        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
 }
 
 .stage-slide.active {
     opacity: 1;
-    transform: scale(1) translate3d(0, 0, 0);
+    transform: perspective(900px) translate3d(0, 0, 0) rotateY(0deg) scale(1);
     pointer-events: auto;
 }
 
