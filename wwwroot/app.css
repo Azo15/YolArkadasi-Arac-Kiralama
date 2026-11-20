@@ -11,6 +11,116 @@
    ========================================================= */
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+}
+
+/* =========================================================
+   FULL-PAGE SCROLL SCENES & FLOATING SCENE HUD
+   ========================================================= */
+.scroll-scene {
+    scroll-snap-align: start;
+    scroll-margin-top: 20px;
+    transform: scale(var(--scene-scale, 1));
+    opacity: var(--scene-opacity, 1);
+    transform-origin: center top;
+    transition: transform 0.14s linear, opacity 0.18s linear;
+    will-change: transform, opacity;
+}
+
+.scene-nav-hud {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 10px;
+    border-radius: 999px;
+    background: rgba(18, 59, 52, 0.86);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(209, 242, 106, 0.25);
+    box-shadow: 0 14px 34px rgba(10, 32, 27, 0.24);
+}
+
+.scene-nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    color: #9ec0b4;
+    font: 800 10px 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scene-nav-item:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.scene-nav-item.active {
+    background: #d1f26a;
+    color: #123b34;
+    transform: scale(1.12);
+    box-shadow: 0 0 14px rgba(209, 242, 106, 0.55);
+}
+
+.scene-nav-tooltip {
+    position: absolute;
+    right: 42px;
+    padding: 5px 11px;
+    border-radius: 8px;
+    background: #123b34;
+    color: #ffffff;
+    font: 700 11px 'DM Sans', sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(8px);
+    pointer-events: none;
+    border: 1px solid rgba(209, 242, 106, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.scene-nav-item:hover .scene-nav-tooltip,
+.scene-nav-item.active .scene-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scene-nav-item.active .scene-nav-tooltip {
+    background: #173f36;
+    color: #d1f26a;
+}
+
+@keyframes pageRouteEnter {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 22px, 0) scale(0.985);
+        filter: blur(4px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0);
+    }
+}
+
+.page-route-enter {
+    animation: pageRouteEnter 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (max-width: 1180px) {
+    .scene-nav-hud {
+        display: none;
+    }
 }
 
 #scroll-progress-track {
@@ -119,7 +229,8 @@ html {
 }
 
 @media print {
-    #scroll-progress-track {
+    #scroll-progress-track,
+    .scene-nav-hud {
         display: none !important;
     }
     .reveal-on-scroll,
