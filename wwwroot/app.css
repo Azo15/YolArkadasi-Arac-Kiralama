@@ -122,4 +122,13 @@ html {
     #scroll-progress-track {
         display: none !important;
     }
+    .reveal-on-scroll,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale,
+    .reveal-blur {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
 }
