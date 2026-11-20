@@ -27,7 +27,7 @@ else
         </div>
 
         <!-- Kiralama Aşamaları İlerleme Çubuğu (Multi-Step Stepper) -->
-        <nav class="rental-stepper" aria-label="Kiralama adımları">
+        <nav class="rental-stepper reveal-on-scroll" aria-label="Kiralama adımları">
             <div class="stepper-item step-completed">
                 <div class="step-circle">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
@@ -132,7 +132,7 @@ else
 
         <div class="rental-layout">
             <div class="rental-main-column">
-                <section class="selected-car-panel">
+                <section class="selected-car-panel reveal-left" data-tilt-card>
                     <img src="@_car.ImageUrl" alt="@_car.Brand @_car.Model" />
                     <div class="selected-car-info">
                         <span class="category-pill-inline">@_car.Category</span>
@@ -146,7 +146,7 @@ else
                 <RentalOptions @bind-PickupDate="_pickupDate" @bind-ReturnDate="_returnDate" @bind-SelectedExtraIds="_selectedExtraIds" OnChanged="OnSelectionChanged" />
 
                 <!-- Müşteri İletişim Formu & Alt Tebrik Kartı -->
-                <section class="customer-panel">
+                <section class="customer-panel reveal-on-scroll" data-reveal-delay="80">
                     <div class="extras-heading">
                         <div>
                             <span class="eyebrow">SON ADIM</span>

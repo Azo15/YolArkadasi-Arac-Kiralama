@@ -47,10 +47,12 @@
     else
     {
         <div class="booking-list">
-            @foreach (var booking in _bookings)
+            @for (int i = 0; i < _bookings.Count; i++)
             {
+                var booking = _bookings[i];
+                var revealDelay = (i % 4) * 75;
                 var car = _cars.FirstOrDefault(item => item.Id == booking.CarId);
-                <article id="@($"booking-card-{booking.Id}")" class="booking-card">
+                <article @key="booking.Id" id="@($"booking-card-{booking.Id}")" class="booking-card reveal-on-scroll" data-reveal-delay="@revealDelay" data-tilt-card>
                     <!-- Sadece Yazdırmada Görünen Resmi Fiş Başlığı -->
                     <div class="voucher-print-header" aria-hidden="true">
                         <div class="print-brand-wrap">
