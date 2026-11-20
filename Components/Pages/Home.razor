@@ -41,7 +41,7 @@
                         <span class="category-pill">@CurrentFeaturedCar.Category</span>
                     </div>
 
-                    <div class="showcase-title-area">
+                    <div class="showcase-title-area slide-anim-title" @key="@($"title-{_activeShowcase}")">
                         <h2>@CurrentFeaturedCar.Brand <span>@CurrentFeaturedCar.Model</span></h2>
                         <div class="showcase-specs-row">
                             <span class="spec-chip">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div class="showcase-cta-row">
+                    <div class="showcase-cta-row slide-anim-cta" @key="@($"cta-{_activeShowcase}")">
                         <div class="showcase-price-box">
                             <span class="price-prefix">GÜNLÜK KİRALAMA</span>
                             <div class="price-amount"><strong>@CurrentFeaturedCar.DailyPrice.ToString("N0") ₺</strong> <small>/ gün</small></div>
