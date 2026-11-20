@@ -53,6 +53,46 @@
             el.style.setProperty('--scroll-p', progress.toFixed(4));
         }
 
+        // 2.5 Full-Page Scroll Scenes (.scroll-scene) — scene-to-scene morphing & active HUD dot
+        const scenes = document.querySelectorAll('.scroll-scene');
+        if (scenes.length > 0) {
+            let activeSceneId = null;
+            let bestSceneDist = Infinity;
+
+            for (let i = 0; i < scenes.length; i++) {
+                const scene = scenes[i];
+                const rect = scene.getBoundingClientRect();
+                // Progress: -1 (below viewport), 0 (aligned at top/center), +1 (scrolled past top)
+                const rawP = clamp(-rect.top / Math.max(vh, 1), -1, 1);
+                const absP = Math.abs(rawP);
+                const sceneScale = 1 - Math.min(absP * 0.045, 0.045);
+                const sceneOpacity = clamp(1 - Math.max(absP - 0.55, 0) * 1.1, 0.35, 1);
+
+                scene.style.setProperty('--scene-p', rawP.toFixed(4));
+                scene.style.setProperty('--scene-scale', sceneScale.toFixed(4));
+                scene.style.setProperty('--scene-opacity', sceneOpacity.toFixed(4));
+
+                // Determine which scene occupies viewport center
+                const sceneCenter = rect.top + Math.min(rect.height, vh) * 0.5;
+                const dist = Math.abs(sceneCenter - vhHalf);
+                if (rect.bottom > vh * 0.2 && rect.top < vh * 0.8 && dist < bestSceneDist) {
+                    bestSceneDist = dist;
+                    activeSceneId = scene.id;
+                }
+            }
+
+            if (activeSceneId) {
+                for (let i = 0; i < scenes.length; i++) {
+                    scenes[i].classList.toggle('is-active-scene', scenes[i].id === activeSceneId);
+                }
+                const hudItems = document.querySelectorAll('.scene-nav-item');
+                for (let i = 0; i < hudItems.length; i++) {
+                    const target = hudItems[i].getAttribute('data-scene-target');
+                    hudItems[i].classList.toggle('active', target === activeSceneId);
+                }
+            }
+        }
+
         // 3. Sticky Storytelling Stage (#scroll-story-stage)
         const storyContainer = document.getElementById('scroll-story-stage');
         if (storyContainer) {
