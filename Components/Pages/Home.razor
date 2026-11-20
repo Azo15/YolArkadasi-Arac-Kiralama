@@ -1,14 +1,36 @@
 @page "/"
 @page "/cars"
 @inject CarService Cars
+@inject IJSRuntime JS
 @implements IDisposable
 
 <PageTitle>Araç Kirala | yolarkadaşı</PageTitle>
 
-<!-- 1. EN ÜSTTE: GELİŞMİŞ ARAÇ VİTRİN SLİDER'I (SLAYDBAR) -->
+<!-- SAĞ KENAR YÜZEN BÖLÜM NAVİGASYONU (HUD) -->
+<nav class="scene-nav-hud" aria-label="Sayfa bölümleri">
+    <button type="button" class="scene-nav-item active" data-scene-target="scene-hero" @onclick='() => ScrollToSceneAsync("scene-hero")'>
+        <span>01</span>
+        <span class="scene-nav-tooltip">Vitrin</span>
+    </button>
+    <button type="button" class="scene-nav-item" data-scene-target="scene-experience" @onclick='() => ScrollToSceneAsync("scene-experience")'>
+        <span>02</span>
+        <span class="scene-nav-tooltip">Süreç & Güvence</span>
+    </button>
+    <button type="button" class="scene-nav-item" data-scene-target="scroll-story-stage" @onclick='() => ScrollToSceneAsync("scroll-story-stage")'>
+        <span>03</span>
+        <span class="scene-nav-tooltip">Hikaye Sahnesi</span>
+    </button>
+    <button type="button" class="scene-nav-item" data-scene-target="fleet" @onclick='() => ScrollToSceneAsync("fleet")'>
+        <span>04</span>
+        <span class="scene-nav-tooltip">Tüm Filo (15)</span>
+    </button>
+</nav>
+
+<div class="page-route-enter">
+<!-- 1. SAHNE (100vh): PREMİUM ARAÇ VİTRİN SLİDER'I -->
 @if (!_loading && _error is null && CurrentFeaturedCar is not null)
 {
-    <section class="top-showcase-slider" aria-label="Öne çıkan araç filosu">
+    <section id="scene-hero" class="top-showcase-slider scroll-scene full-viewport-scene" aria-label="Öne çıkan araç filosu">
         <div class="showcase-slider-card">
             <div class="showcase-grid">
                 <!-- Sol Panel: Araç Detayı & Aksiyon -->
@@ -86,11 +108,15 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="scene-scroll-cue" @onclick='() => ScrollToSceneAsync("scene-experience")'>
+            <span>Aşağı Kaydır & Keşfet</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
     </section>
 }
 
-<!-- 2. HEMEN ALTINDA: AYNI BOYUTTA TAM EKRANA SIĞAN KARTLAR GRİDİ -->
-<section class="screen-cards-grid" aria-label="Hızlı işlemler ve özellikler">
+<!-- 2. SAHNE (100vh): KARTLAR GRİDİ & MARKA ŞERİDİ -->
+<section id="scene-experience" class="screen-cards-grid scroll-scene full-viewport-scene" aria-label="Hızlı işlemler ve özellikler">
     <!-- Üst İkili Sıra -->
     <div class="cards-duo-row">
         <!-- Kart 1: Ana Tanıtım & Hızlı Butonlar -->
@@ -194,10 +220,8 @@
             </div>
         </div>
     </div>
-</section>
-
 <!-- 2.5 FRAMER-STYLE SONSUZ MARKA ŞERİDİ (MARQUEE) -->
-<section class="brand-marquee-band reveal-blur" aria-label="Filo markaları">
+<div class="brand-marquee-band reveal-blur" aria-label="Filo markaları">
     <div class="marquee-track">
         <div class="marquee-group">
             <span>PORSCHE</span><i>•</i>
@@ -222,10 +246,11 @@
             <span>RENAULT</span><i>•</i>
         </div>
     </div>
+</div>
 </section>
 
-<!-- 2.8 STICKY SCROLL STORYTELLING STAGE (tinyPod & Unifiers of Japan İlhamlı) -->
-<section id="scroll-story-stage" class="story-scroll-container" data-active-chapter="0" aria-label="Yolculuk hikayesi ve scroll vitrini">
+<!-- 3. SAHNE: STICKY SCROLL STORYTELLING STAGE (tinyPod & Unifiers of Japan İlhamlı) -->
+<section id="scroll-story-stage" class="story-scroll-container scroll-scene" data-active-chapter="0" aria-label="Yolculuk hikayesi ve scroll vitrini">
     <div class="story-section-intro reveal-on-scroll">
         <span class="story-kicker">İNTERAKTİF DENEYİM</span>
         <h2>Kaydırdıkça şekillenen <span>akıllı kiralama.</span></h2>
@@ -349,8 +374,8 @@
     </div>
 </section>
 
-<!-- 3. FİLO KATALOĞU -->
-<div id="fleet">
+<!-- 4. SAHNE: FİLO KATALOĞU -->
+<section id="fleet" class="scroll-scene fleet-scene-wrap">
     @if (_loading)
     {
         <div class="loading-state">
@@ -369,6 +394,7 @@
     {
         <CarList Cars="_cars" />
     }
+</section>
 </div>
 
 @code {
@@ -456,5 +482,10 @@
     public void Dispose()
     {
         _sliderTimer?.Dispose();
+    }
+
+    private async Task ScrollToSceneAsync(string sectionId)
+    {
+        await JS.InvokeVoidAsync("yolArkadasiScroll.scrollToSection", sectionId);
     }
 }
