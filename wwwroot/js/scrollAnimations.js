@@ -53,32 +53,44 @@
             el.style.setProperty('--scroll-p', progress.toFixed(4));
         }
 
-        // 2.5 Full-Page Scroll Scenes (.scroll-scene) — scene-to-scene morphing & active HUD dot
+        // 2.5 Full-Page Scroll Scenes (.scroll-scene) — crisp while in view, gradual fade only when leaving
         const scenes = document.querySelectorAll('.scroll-scene');
         if (scenes.length > 0) {
             let activeSceneId = null;
-            let bestSceneDist = Infinity;
+            let bestVisibleOverlap = -1;
 
             for (let i = 0; i < scenes.length; i++) {
                 const scene = scenes[i];
                 const rect = scene.getBoundingClientRect();
-                // Progress: -1 (below viewport), 0 (aligned at top/center), +1 (scrolled past top)
-                const rawP = clamp(-rect.top / Math.max(vh, 1), -1, 1);
-                const absP = Math.abs(rawP);
-                const sceneScale = 1 - Math.min(absP * 0.045, 0.045);
-                const sceneOpacity = clamp(1 - Math.max(absP - 0.55, 0) * 1.1, 0.35, 1);
 
-                scene.style.setProperty('--scene-p', rawP.toFixed(4));
-                scene.style.setProperty('--scene-scale', sceneScale.toFixed(4));
-                scene.style.setProperty('--scene-opacity', sceneOpacity.toFixed(4));
+                // How much of the viewport height this scene currently occupies
+                const visibleTop = Math.max(rect.top, 0);
+                const visibleBottom = Math.min(rect.bottom, vh);
+                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
 
-                // Determine which scene occupies viewport center
-                const sceneCenter = rect.top + Math.min(rect.height, vh) * 0.5;
-                const dist = Math.abs(sceneCenter - vhHalf);
-                if (rect.bottom > vh * 0.2 && rect.top < vh * 0.8 && dist < bestSceneDist) {
-                    bestSceneDist = dist;
+                if (visibleHeight > bestVisibleOverlap) {
+                    bestVisibleOverlap = visibleHeight;
                     activeSceneId = scene.id;
                 }
+
+                // Exit fade: only fade out when the bottom of the scene is actually leaving the upper 70% of viewport
+                let exitP = 0;
+                if (rect.bottom < vh * 0.72) {
+                    exitP = clamp((vh * 0.72 - rect.bottom) / (vh * 0.72), 0, 1);
+                }
+
+                // Enter fade: only fade in while top is still in the lower 35% of viewport
+                let enterP = 0;
+                if (rect.top > vh * 0.65) {
+                    enterP = clamp((rect.top - vh * 0.65) / (vh * 0.35), 0, 1);
+                }
+
+                const transitionP = Math.max(exitP, enterP);
+                const sceneScale = 1 - transitionP * 0.045;
+                const sceneOpacity = clamp(1 - transitionP * 0.72, 0.25, 1);
+
+                scene.style.setProperty('--scene-scale', sceneScale.toFixed(4));
+                scene.style.setProperty('--scene-opacity', sceneOpacity.toFixed(4));
             }
 
             if (activeSceneId) {
