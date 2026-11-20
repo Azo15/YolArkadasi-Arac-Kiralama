@@ -230,6 +230,7 @@
 }
 
 .car-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -240,10 +241,25 @@
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
 }
 
+.car-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(209, 242, 106, 0.16), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
 .car-card:hover {
-    transform: translateY(-8px) scale(1.008);
+    transform: perspective(900px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg)) translateY(-8px) scale(1.008);
     box-shadow: 0 20px 42px -10px rgba(23, 63, 54, 0.16), 0 0 0 1px rgba(52, 211, 153, 0.25);
     border-color: #a4ceb2;
+}
+
+.car-card:hover::after {
+    opacity: 1;
 }
 
 .card-unavailable {

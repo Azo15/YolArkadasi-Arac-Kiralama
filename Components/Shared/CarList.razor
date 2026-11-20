@@ -1,5 +1,5 @@
 <section class="fleet-section" aria-label="Araç listesi">
-    <div class="search-panel" aria-label="Araç filtreleri">
+    <div class="search-panel reveal-on-scroll" aria-label="Araç filtreleri">
         <label class="filter-field">
             <span>ARAÇ ARA</span>
             <input @bind="_query" @bind:event="oninput" placeholder="Marka veya model ara..." />
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Hızlı Kategori ve Filtre Butonları -->
-    <div class="quick-filter-bar">
+    <div class="quick-filter-bar reveal-on-scroll" data-reveal-delay="60">
         <div class="quick-tags">
             <button type="button" class="tag-btn @(string.IsNullOrEmpty(_category) && !_onlyAvailable ? "active" : "")" @onclick="() => SetCategory(string.Empty)">
                 Tüm Araçlar (@Cars.Count)
@@ -82,7 +82,7 @@
         }
     </div>
 
-    <div class="section-heading">
+    <div class="section-heading reveal-left">
         <div>
             <span class="eyebrow">ÖZEL SEÇİLMİŞ FİLO</span>
             <h2>Kiralamaya hazır araçlar</h2>
@@ -102,9 +102,14 @@
     else
     {
         <div class="car-grid">
-            @foreach (var car in FilteredCars)
+            @for (int i = 0; i < FilteredCars.Count; i++)
             {
-                <article class="car-card @(car.IsAvailable ? "" : "card-unavailable")">
+                var car = FilteredCars[i];
+                var revealDelay = (i % 3) * 85;
+                <article @key="car.Id"
+                         class="car-card reveal-on-scroll @(car.IsAvailable ? "" : "card-unavailable")"
+                         data-reveal-delay="@revealDelay"
+                         data-tilt-card>
                     <div class="car-image-wrap">
                         <img class="car-image" src="@car.ImageUrl" alt="@car.Brand @car.Model" loading="lazy" />
                         <span class="category-pill">@car.Category</span>
