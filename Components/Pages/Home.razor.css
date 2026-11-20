@@ -587,6 +587,56 @@
 }
 
 /* =========================================================
+   2.5 FRAMER-STYLE SONSUZ MARKA ŞERİDİ (MARQUEE)
+   ========================================================= */
+.brand-marquee-band {
+    margin: 26px 0;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #123b34;
+    border: 1px solid #24554a;
+    padding: 13px 0;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 28s linear infinite;
+}
+
+.brand-marquee-band:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+.marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding-right: 26px;
+}
+
+.marquee-group span {
+    font: 800 12.5px Manrope, sans-serif;
+    letter-spacing: 2.2px;
+    color: #eaf3ec;
+    white-space: nowrap;
+}
+
+.marquee-group i {
+    font-style: normal;
+    color: #d1f26a;
+    font-size: 14px;
+}
+
+@keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* =========================================================
    3. RESPONSİVE DÜZENLEMELER
    ========================================================= */
 @media (max-width: 1120px) {
